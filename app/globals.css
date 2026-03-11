@@ -1,0 +1,311 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Design System: Natural Intelligence Theme
+   - Primary: Mocha Mousse (Pantone 17-1230)
+   - Accent: Green Aurora (Seoul Color 2025)
+   - Philosophy: Functional Minimalism + Liquid Glass
+   ============================================================ */
+
+/* ============================================================
+   Design System: Neon Future Theme
+   - Primary: Deep Void (Rich Black/Gray)
+   - Accent: Fluorescent Lime (High Visibility)
+   - Philosophy: High Contrast + Neon Glow + Cyberpunk
+   ============================================================ */
+
+:root {
+  /* ===== Color System ===== */
+  /* Primary: Deep Void - Infinite Depth */
+  --color-primary: #030712;
+  /* Gray 950 */
+  --color-primary-light: #111827;
+  /* Gray 900 */
+  --color-primary-dark: #000000;
+
+  /* Accent: Fluorescent Lime - Pure Energy */
+  --color-accent: #ccff00;
+  /* Neon Lime */
+  --color-accent-hover: #b3e600;
+  --color-accent-glow: rgba(204, 255, 0, 0.4);
+
+  /* Secondary Accent: Cyber Cyan */
+  --color-secondary: #00f3ff;
+  --color-secondary-glow: rgba(0, 243, 255, 0.4);
+
+  /* Surface: Glass with Neon Edge */
+  --color-surface: rgba(17, 24, 39, 0.7);
+  --color-surface-glass: rgba(3, 7, 18, 0.6);
+  --glass-blur: 16px;
+
+  /* Text Colors */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #94a3b8;
+  /* Slate 400 */
+  --color-text-inverse: #030712;
+  --color-text-muted: #64748b;
+  /* Slate 500 */
+
+  /* Semantic Colors */
+  --color-success: #ccff00;
+  --color-warning: #ffbf00;
+  --color-error: #ff0055;
+  --color-info: #00f3ff;
+
+  /* ===== Typography System ===== */
+  --font-display: 'Geist Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Geist Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+
+  /* Font Sizes (Fluid Typography) */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.3vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-3xl: clamp(1.875rem, 1.5rem + 1.5vw, 2.5rem);
+  --text-4xl: clamp(2.25rem, 1.8rem + 2vw, 3rem);
+  --text-5xl: clamp(3rem, 2.5rem + 2.5vw, 4rem);
+  --text-6xl: clamp(3.75rem, 3rem + 3vw, 5rem);
+
+  /* ===== Spacing System ===== */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* ===== Layout ===== */
+  --container-max: 1400px;
+  --container-padding: 1.5rem;
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.75rem;
+  --border-radius-lg: 1.25rem;
+  --border-radius-full: 9999px;
+
+  /* ===== Animation System ===== */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-in: cubic-bezier(0.4, 0, 1, 1);
+  --easing-out: cubic-bezier(0, 0, 0.2, 1);
+  --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ===== Shadows ===== */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(77, 255, 145, 0.2);
+  --shadow-premium: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+/* Force Dark Mode for Neon Theme */
+.dark,
+:root {
+  color-scheme: dark;
+}
+
+/* ===== Base Styles ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background: var(--color-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--duration-base) var(--easing-default);
+}
+
+/* ===== Utility Classes ===== */
+@layer utilities {
+
+  /* Premium Glass Effect - Refined & Exclusive */
+  .glass {
+    background: rgba(17, 24, 39, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow-premium);
+  }
+
+  .premium-glass {
+    @apply bg-white/[0.02] backdrop-blur-[40px] border border-white/10;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  }
+
+  /* Neon Glow Effect */
+  .aurora-glow,
+  .neon-glow {
+    box-shadow: var(--shadow-glow);
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .neon-border-glow {
+    border: 1px solid var(--color-accent);
+    box-shadow: 0 0 10px var(--color-accent-glow), inset 0 0 10px var(--color-accent-glow);
+  }
+
+  /* Smooth Transitions */
+  .transition-smooth {
+    transition: all var(--duration-base) var(--easing-default);
+  }
+
+  /* Gradient Backgrounds */
+  .bg-gradient-mocha {
+    background: radial-gradient(circle at top, #0f172a 0%, #020617 100%);
+  }
+
+  .bg-premium-dark {
+    background: radial-gradient(circle at top right, #1e293b 0%, #020617 100%);
+  }
+
+  .bg-gradient-aurora {
+    background: linear-gradient(135deg, #ccff00 0%, #00f3ff 100%);
+  }
+
+  .bg-gradient-neon {
+    background: linear-gradient(135deg, #ccff00 0%, #00f3ff 100%);
+  }
+
+  .neon-glow-text {
+    text-shadow: 0 0 20px rgba(77, 255, 145, 0.4);
+  }
+
+  .hero-heading {
+    @apply font-bold tracking-[0.2em] uppercase leading-[1.1];
+  }
+}
+
+/* ===== Component Base Styles ===== */
+@layer components {
+
+  /* Primary Button (Aurora) */
+  .btn-primary {
+    @apply px-6 py-3 rounded-full font-semibold text-mocha-900 bg-aurora-400 hover:bg-aurora-500 transition-smooth aurora-glow focus:outline-none focus:ring-2 focus:ring-aurora-400 focus:ring-offset-2;
+  }
+
+  /* Secondary Button (Mocha) */
+  .btn-secondary {
+    @apply px-6 py-3 rounded-full font-semibold text-white bg-mocha-600 hover:bg-mocha-700 transition-smooth focus:outline-none focus:ring-2 focus:ring-mocha-500 focus:ring-offset-2;
+  }
+
+  /* Ghost Button */
+  .btn-ghost {
+    @apply px-6 py-3 rounded-full font-semibold text-mocha-50 border-2 border-mocha-500 hover:bg-mocha-500/10 transition-smooth focus:outline-none focus:ring-2 focus:ring-mocha-500;
+  }
+
+  /* Card with Liquid Glass */
+  .card {
+    @apply glass rounded-2xl p-6 transition-smooth hover:scale-105;
+  }
+
+  /* Bento Grid Item */
+  .bento-item {
+    @apply glass rounded-2xl p-6 transition-smooth hover:scale-[1.02] border border-mocha-400/20;
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(77, 255, 145, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(77, 255, 145, 0.6);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Scrollbar Styling ===== */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-primary-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-hover);
+}
+
+/* ===== Selection Styling ===== */
+::selection {
+  background: var(--color-accent);
+  color: var(--color-primary-dark);
+}
+
+::-moz-selection {
+  background: var(--color-accent);
+  color: var(--color-primary-dark);
+}
+
+/* ===== Focus Visible ===== */
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,400 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  LayoutDashboard, 
+  Receipt, 
+  CreditCard, 
+  Settings, 
+  Plus, 
+  Download, 
+  RefreshCcw, 
+  TrendingUp, 
+  Calendar,
+  CheckCircle2,
+  AlertCircle,
+  ExternalLink,
+  Search,
+  Zap,
+  Link,
+  Copy,
+  Mail,
+  Cpu,
+  ArrowRight
+} from 'lucide-react';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  Cell
+} from 'recharts';
+
+// 서비스 설정
+const SERVICES = {
+  openai: { name: 'OpenAI (ChatGPT)', color: '#10a37f', price: 20.00, icon: '🤖' },
+  claude: { name: 'Anthropic (Claude)', color: '#d97757', price: 20.00, icon: '🎭' },
+  gemini: { name: 'Google Gemini', color: '#4285f4', price: 19.99, icon: '✨' },
+  mathpix: { name: 'Mathpix', color: '#ff5c5c', price: 4.99, icon: '📐' }
+};
+
+// 초기 트랜잭션 데이터
+const INITIAL_TRANSACTIONS = [
+  { id: 1, service: 'openai', date: '2024-05-15', amount: 20.00, status: 'Completed', invoiceId: 'INV-OA-9921' },
+  { id: 2, service: 'claude', date: '2024-05-12', amount: 20.00, status: 'Completed', invoiceId: 'INV-ANT-4412' },
+  { id: 3, service: 'mathpix', date: '2024-05-10', amount: 4.99, status: 'Completed', invoiceId: 'INV-MP-1102' },
+  { id: 4, service: 'gemini', date: '2024-05-01', amount: 19.99, status: 'Completed', invoiceId: 'INV-GOOG-882' },
+];
+
+const App = () => {
+  const [transactions, setTransactions] = useState(INITIAL_TRANSACTIONS);
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  // Zapier 관련 상태
+  const [zapierConnected, setZapierConnected] = useState(true);
+  const [webhookUrl] = useState('https://hooks.zapier.com/v1/event/12345/ai-billing-sync/');
+  const [copyFeedback, setCopyFeedback] = useState(false);
+
+  const totalSpent = transactions.reduce((acc, curr) => acc + curr.amount, 0);
+  const monthlySpent = transactions
+    .filter(t => t.date.startsWith('2024-05'))
+    .reduce((acc, curr) => acc + curr.amount, 0);
+
+  const chartData = Object.keys(SERVICES).map(key => ({
+    name: SERVICES[key].name,
+    value: transactions.filter(t => t.service === key).reduce((acc, curr) => acc + curr.amount, 0),
+    color: SERVICES[key].color
+  }));
+
+  const handleSync = () => {
+    setIsSyncing(true);
+    // Zapier 연동을 통한 자동 동기화 시뮬레이션
+    setTimeout(() => {
+      setIsSyncing(false);
+    }, 2500);
+  };
+
+  const copyToClipboard = (text) => {
+    document.execCommand('copy'); // Fallback for iFrame environment
+    setCopyFeedback(true);
+    setTimeout(() => setCopyFeedback(false), 2000);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+      {/* Sidebar */}
+      <div className="fixed left-0 top-0 h-full w-64 bg-white border-r border-slate-200 p-6 hidden md:block z-20">
+        <div className="flex items-center gap-2 mb-10">
+          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold italic underline">AI</div>
+          <h1 className="text-xl font-bold tracking-tight">AI Billing</h1>
+        </div>
+        
+        <nav className="space-y-2">
+          <button onClick={() => setActiveTab('dashboard')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'dashboard' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-500 hover:bg-slate-50'}`}>
+            <LayoutDashboard size={18} /> 대시보드
+          </button>
+          <button onClick={() => setActiveTab('receipts')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'receipts' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-500 hover:bg-slate-50'}`}>
+            <Receipt size={18} /> 영수증 보관함
+          </button>
+          <button onClick={() => setActiveTab('integrations')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'integrations' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-500 hover:bg-slate-50'}`}>
+            <Zap size={18} /> 연동 설정 (Zapier)
+          </button>
+          <div className="pt-4 mt-4 border-t border-slate-100 space-y-2">
+            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 transition-all text-sm">
+              <CreditCard size={18} /> 결제 수단 관리
+            </button>
+            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 transition-all text-sm">
+              <Settings size={18} /> 개인 설정
+            </button>
+          </div>
+        </nav>
+
+        <div className="absolute bottom-10 left-6 right-6 p-5 bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-2xl text-white shadow-xl shadow-indigo-200">
+          <div className="flex justify-between items-start mb-4">
+            <Zap size={20} className="text-indigo-200" fill="currentColor" />
+            <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full">LIVE</span>
+          </div>
+          <p className="text-xs text-indigo-100 mb-1 font-medium italic underline">Zapier 자동화 가동 중</p>
+          <p className="text-xl font-bold">${monthlySpent.toFixed(2)}</p>
+          <p className="text-[10px] text-indigo-200 mt-2 italic underline text-right opacity-80 underline-offset-2">5월 지출 내역</p>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <main className="md:ml-64 p-6 md:p-10">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+          <div>
+            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+              {activeTab === 'dashboard' ? 'AI 구독 대시보드' : 
+               activeTab === 'receipts' ? '영수증 아카이브' : 'Zapier 자동화 연동'}
+            </h2>
+            <p className="text-slate-500 mt-1 font-medium">
+              {activeTab === 'dashboard' ? '실시간으로 업데이트되는 AI 서비스 결제 현황입니다.' : 
+               activeTab === 'receipts' ? '이메일에서 수집된 모든 영수증을 관리합니다.' : 'Zapier를 통해 영수증 수집을 자동화하세요.'}
+            </p>
+          </div>
+          <div className="flex gap-3 w-full md:w-auto">
+            <button 
+              onClick={handleSync}
+              disabled={isSyncing}
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white border border-slate-200 px-5 py-3 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 hover:border-indigo-200 transition-all disabled:opacity-50 shadow-sm"
+            >
+              <RefreshCcw size={16} className={`${isSyncing ? 'animate-spin text-indigo-600' : ''}`} />
+              {isSyncing ? 'Zapier에서 영수증 스캔 중...' : '실시간 동기화'}
+            </button>
+          </div>
+        </header>
+
+        {activeTab === 'dashboard' && (
+          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { label: '연간 총 지출', value: `$${totalSpent.toFixed(2)}`, icon: <TrendingUp size={20}/>, color: 'blue' },
+                { label: '다음 결제 예정', value: '06월 01일', icon: <Calendar size={20}/>, color: 'purple' },
+                { label: 'Zapier 연동 상태', value: zapierConnected ? '정상 연결' : '연결 필요', icon: <Zap size={20}/>, color: zapierConnected ? 'green' : 'orange' },
+                { label: '이번 달 수집', value: '4건', icon: <Receipt size={20}/>, color: 'indigo' }
+              ].map((stat, i) => (
+                <div key={i} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${
+                    stat.color === 'blue' ? 'bg-blue-50 text-blue-600' :
+                    stat.color === 'purple' ? 'bg-purple-50 text-purple-600' :
+                    stat.color === 'green' ? 'bg-green-50 text-green-600' :
+                    stat.color === 'orange' ? 'bg-orange-50 text-orange-600' :
+                    'bg-indigo-50 text-indigo-600'
+                  }`}>
+                    {stat.icon}
+                  </div>
+                  <p className="text-slate-400 text-sm font-semibold mb-1 uppercase tracking-wider">{stat.label}</p>
+                  <p className="text-2xl font-black text-slate-800">{stat.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Chart */}
+              <div className="lg:col-span-2 bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
+                <div className="flex justify-between items-center mb-8">
+                  <h3 className="text-xl font-bold flex items-center gap-2">지출 분석</h3>
+                  <select className="bg-slate-50 border-none rounded-lg text-xs font-bold p-2 outline-none">
+                    <option>최근 6개월</option>
+                    <option>올해 전체</option>
+                  </select>
+                </div>
+                <div className="h-72 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={chartData}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 11, fontWeight: 600}} />
+                      <YAxis axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 11, fontWeight: 600}} />
+                      <Tooltip 
+                        cursor={{fill: '#f8fafc'}}
+                        contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)'}}
+                      />
+                      <Bar dataKey="value" radius={[8, 8, 8, 8]} barSize={45}>
+                        {chartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Zapier Connection Card */}
+              <div className="bg-slate-900 rounded-[2rem] p-8 text-white relative overflow-hidden group shadow-2xl shadow-slate-200">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/20 blur-3xl rounded-full"></div>
+                <div className="relative z-10 h-full flex flex-col">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
+                      <Zap size={24} fill="currentColor" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-lg">Zapier 자동화</h4>
+                      <p className="text-xs text-orange-200">이메일 연동 활성화됨</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4 flex-grow">
+                    <div className="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
+                      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center"><Mail size={14} /></div>
+                      <div className="text-xs">
+                        <p className="font-bold">메일함 스캔</p>
+                        <p className="opacity-60 italic underline">매일 오전 9:00</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
+                      <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center"><Cpu size={14} /></div>
+                      <div className="text-xs">
+                        <p className="font-bold">AI 데이터 추출</p>
+                        <p className="opacity-60 italic underline">GPT-4o 모델 사용</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={() => setActiveTab('integrations')}
+                    className="w-full mt-6 py-4 bg-white text-slate-900 rounded-2xl font-black text-sm hover:bg-orange-50 transition-all flex items-center justify-center gap-2 group"
+                  >
+                    연동 상세 설정 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'receipts' && (
+          <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-8 animate-in fade-in duration-500">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
+              <h3 className="text-2xl font-black text-slate-800 tracking-tight italic underline decoration-indigo-200">영수증 보관함</h3>
+              <div className="relative w-full md:w-80">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                <input 
+                  type="text" 
+                  placeholder="서비스명, 인보이스 번호 검색..." 
+                  className="w-full pl-12 pr-6 py-3.5 bg-slate-50 border-none rounded-2xl text-sm font-medium focus:ring-2 focus:ring-indigo-500 transition-all"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+              {transactions
+                .filter(t => SERVICES[t.service].name.toLowerCase().includes(searchTerm.toLowerCase()))
+                .map(t => (
+                  <div key={t.id} className="p-5 rounded-3xl border border-slate-100 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-50/50 transition-all group bg-white">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-2xl border border-slate-100 group-hover:bg-white group-hover:scale-110 transition-transform">
+                        {SERVICES[t.service].icon}
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">{t.invoiceId}</p>
+                        <p className="font-black text-indigo-600 text-lg">${t.amount}</p>
+                      </div>
+                    </div>
+                    <h5 className="font-black text-slate-800 mb-1">{SERVICES[t.service].name}</h5>
+                    <div className="flex items-center gap-2 text-slate-400 text-xs font-bold mb-6">
+                      <Calendar size={14} /> {t.date}
+                    </div>
+                    <div className="flex gap-2">
+                      <button className="flex-1 py-3 bg-slate-50 text-slate-700 rounded-xl text-xs font-black hover:bg-slate-100 transition-all flex items-center justify-center gap-2">
+                        <Download size={14} /> PDF
+                      </button>
+                      <button className="p-3 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-all">
+                        <ExternalLink size={16} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'integrations' && (
+          <div className="max-w-4xl mx-auto space-y-8 animate-in zoom-in-95 duration-500">
+            {/* Zapier Config Card */}
+            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl p-10 overflow-hidden relative">
+              <div className="absolute top-0 left-0 w-2 h-full bg-orange-500"></div>
+              <div className="flex flex-col md:flex-row gap-10">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-14 h-14 bg-orange-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-orange-100">
+                      <Zap size={30} fill="currentColor" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black">Zapier 연결 설정</h3>
+                      <p className={`text-sm font-bold flex items-center gap-1 ${zapierConnected ? 'text-green-600' : 'text-slate-400'}`}>
+                        {zapierConnected ? <><CheckCircle2 size={14}/> 연동 활성화됨</> : '연동 대기 중'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="text-slate-600 text-sm leading-relaxed mb-8">
+                    Gmail이나 Outlook으로 수신된 AI 서비스의 영수증을 실시간으로 감지하여 대시보드에 자동으로 추가합니다. 
+                    재피어에서 **'Webhooks by Zapier'** 액션을 사용해 아래 URL로 데이터를 전송하세요.
+                  </p>
+
+                  <div className="space-y-6">
+                    <div>
+                      <label className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block">Your Personal Webhook URL</label>
+                      <div className="flex gap-2">
+                        <div className="flex-1 bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-mono text-xs text-slate-500 break-all">
+                          {webhookUrl}
+                        </div>
+                        <button 
+                          onClick={() => copyToClipboard(webhookUrl)}
+                          className={`px-6 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap shadow-sm ${
+                            copyFeedback ? 'bg-green-500 text-white' : 'bg-slate-900 text-white hover:bg-slate-800'
+                          }`}
+                        >
+                          {copyFeedback ? <CheckCircle2 size={16} /> : <Copy size={16} />}
+                          {copyFeedback ? '복사됨!' : 'URL 복사'}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="pt-6 border-t border-slate-100">
+                      <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2"><Link size={18} className="text-indigo-500"/> 자동화 트리거 구성</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {[
+                          { step: '1', title: 'Gmail 트리거', desc: '특정 서비스의 영수증 이메일 감지' },
+                          { step: '2', title: 'Data 파싱', desc: 'AI가 금액, 날짜, 서비스 자동 추출' },
+                          { step: '3', title: 'Webhook 전송', desc: '대시보드로 데이터 실시간 업데이트' }
+                        ].map((s, idx) => (
+                          <div key={idx} className="bg-slate-50 p-4 rounded-2xl relative">
+                            <span className="absolute -top-2 -left-2 w-6 h-6 bg-indigo-600 text-white rounded-full flex items-center justify-center text-[10px] font-black">{s.step}</span>
+                            <p className="font-bold text-xs mb-1 mt-1">{s.title}</p>
+                            <p className="text-[10px] text-slate-500 leading-normal font-medium">{s.desc}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Help/Status Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-medium italic underline underline-offset-4 decoration-slate-200">
+              <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                <h4 className="font-black text-lg mb-4 flex items-center gap-2"><Mail size={18} className="text-blue-500"/> 감지 대상 이메일</h4>
+                <ul className="space-y-3 text-sm">
+                  {Object.values(SERVICES).map((s, idx) => (
+                    <li key={idx} className="flex items-center justify-between text-slate-600">
+                      <span className="flex items-center gap-2">{s.icon} {s.name}</span>
+                      <span className="text-[10px] font-black bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full uppercase tracking-tighter">자동 감지됨</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                <h4 className="font-black text-lg mb-4 flex items-center gap-2"><RefreshCcw size={18} className="text-green-500"/> 최근 자동화 로그</h4>
+                <div className="space-y-3 text-xs">
+                  <div className="flex justify-between items-center py-2 border-b border-slate-50">
+                    <span className="text-slate-800 font-bold">OpenAI 영수증 수신</span>
+                    <span className="text-slate-400 italic underline">3시간 전</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-slate-50">
+                    <span className="text-slate-800 font-bold">Claude 결제 정보 분석</span>
+                    <span className="text-slate-400 italic underline">어제 14:20</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-slate-50">
+                    <span className="text-slate-800 font-bold">Google Gemini 동기화 완료</span>
+                    <span className="text-slate-400 italic underline">5월 1일</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+};
+
+export default App;
