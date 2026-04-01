@@ -1,22 +1,16 @@
 import type { Metadata, Viewport } from 'next'
-import { Lexend } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
-
-const lexend = Lexend({
-  subsets: ['latin'],
-  variable: '--font-lexend',
-  display: 'swap',
-})
+import { AuthProvider } from '@/lib/auth-context'
 
 export const metadata: Metadata = {
-  title: '차수학 (Cha Math Academy) - Full Restoration (Official)',
-  description: '최상의 수학 교육, 최적의 학습 로드맵. 차수학이 학생의 미래를 바꿉니다.',
-  keywords: ['차수학', 'Cha Math Academy', '수학학원', '입사정보', '내신대비', '수능수학'],
+  title: '차수학 | 중·고등 수학 전문 학원',
+  description: '데이터 기반 개별 관리와 원장 직접 클리닉으로 학생의 수학 실력을 책임집니다. 부산 사상구 차수학.',
+  keywords: ['차수학', '수학학원', '부산수학', '내신대비', '수능수학', '개별관리', '사상구'],
   authors: [{ name: '차수학' }],
   openGraph: {
-    title: '차수학 (Cha Math Academy) - Official Platform',
-    description: '검증된 커리큘럼과 압도적인 실력 향상. 차수학 공식 홈페이지입니다.',
+    title: '차수학 | 중·고등 수학 전문',
+    description: '데이터 기반 개별 관리와 원장 직접 클리닉. 차수학 공식 홈페이지.',
     type: 'website',
     locale: 'ko_KR',
   },
@@ -34,17 +28,24 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ko" suppressHydrationWarning className={lexend.variable}>
+    <html lang="ko" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css"
+        />
+        <script
+          src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"
+          defer
+        />
       </head>
-      <body className="antialiased bg-gradient-mocha min-h-screen font-sans">
-        {/* Main Content */}
-        <main className="relative">
-          <Header />
-          {children}
-        </main>
+      <body className="antialiased bg-void grain font-sans min-h-[100dvh]">
+        <AuthProvider>
+          <main className="relative">
+            <Header />
+            {children}
+          </main>
+        </AuthProvider>
       </body>
     </html>
   )

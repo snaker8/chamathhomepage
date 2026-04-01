@@ -1,7 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Search, Bell, BookOpen, TrendingUp, Calendar, Filter, ChevronRight, Share2, Eye, Loader2, Edit3, X, Save, Trash2, Settings } from 'lucide-react'
+import { Search, Bell, BookOpen, TrendingUp, Calendar, Filter, ChevronRight, Share2, Eye, Loader2, Edit3, X, Save, Trash2, Settings, CheckCircle } from 'lucide-react'
+import Link from 'next/link'
+import { db } from '@/lib/firebase'
+import { collection, addDoc } from 'firebase/firestore'
 
 export default function InfoBoardPage() {
     const [activeCategory, setActiveCategory] = useState('전체')
@@ -10,6 +13,25 @@ export default function InfoBoardPage() {
     const [isAdminMode, setIsAdminMode] = useState(false)
     const [editingItem, setEditingItem] = useState<any>(null)
     const [isUpdating, setIsUpdating] = useState(false)
+    const [newsletterEmail, setNewsletterEmail] = useState('')
+    const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+    const handleNewsletterSubmit = async () => {
+        if (!newsletterEmail.trim() || !newsletterEmail.includes('@')) return
+        setNewsletterStatus('loading')
+        try {
+            await addDoc(collection(db, 'newsletter-subscribers'), {
+                email: newsletterEmail.trim(),
+                subscribedAt: new Date().toISOString(),
+            })
+            setNewsletterStatus('success')
+            setNewsletterEmail('')
+            setTimeout(() => setNewsletterStatus('idle'), 3000)
+        } catch {
+            setNewsletterStatus('error')
+            setTimeout(() => setNewsletterStatus('idle'), 3000)
+        }
+    }
 
     const categories = ['전체', '입시정보', '학습 전략', '학원 소식', '자료실']
 
@@ -61,66 +83,65 @@ export default function InfoBoardPage() {
     }
 
     const stats = [
-        { label: '이번 주 새로운 정보', value: newsItems.length > 0 ? '1' : '0', icon: <Bell className="w-5 h-5 text-aurora-400" /> },
-        { label: '누적 입시 리포트', value: '42', icon: <BookOpen className="w-5 h-5 text-neon-cyan" /> },
-        { label: '조회수 급증 키워드', value: '고교학점제', icon: <TrendingUp className="w-5 h-5 text-neon-pink" /> },
+        { label: '이번 주 새로운 정보', value: newsItems.length > 0 ? '1' : '0', icon: <Bell className="w-4 h-4 text-accent-600" /> },
+        { label: '누적 입시 리포트', value: '42', icon: <BookOpen className="w-4 h-4 text-accent-600" /> },
+        { label: '조회수 급증 키워드', value: '고교학점제', icon: <TrendingUp className="w-4 h-4 text-accent-600" /> },
     ]
 
     return (
-        <div className="min-h-screen bg-mocha-950 pt-32 pb-20 px-6">
-            <div className="container mx-auto">
+        <div className="min-h-[100dvh] bg-void-950 pt-32 pb-20 px-6">
+            <div className="container-main">
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                     <div>
-                        <div className="flex items-center gap-4 mb-2">
-                            <h1 className="text-4xl md:text-5xl font-bold text-white">입시정보 게시판</h1>
+                        <div className="flex items-center gap-3 mb-3">
+                            <h1 className="text-4xl md:text-5xl font-bold text-white break-keep-all">입시정보 게시판</h1>
                             <button
                                 onClick={() => setIsAdminMode(!isAdminMode)}
-                                className={`p-2 rounded-lg transition-all ${isAdminMode ? 'bg-aurora-400/20 text-aurora-400' : 'text-mocha-700 hover:text-mocha-400'}`}
+                                className={`p-2 rounded-lg transition-all shrink-0 ${isAdminMode ? 'bg-accent-600/20 text-accent-600' : 'text-void-600 hover:text-void-400'}`}
                                 title="관리자 모드"
                             >
                                 <Settings className="w-5 h-5" />
                             </button>
                         </div>
-                        <p className="text-mocha-400 text-lg">최신 입시 데이터와 차수학 엄궁 캠퍼스만의 분석 리포트를 확인하세요.</p>
+                        <p className="text-void-400 text-sm break-keep-all">최신 입시 데이터와 차수학 엄궁 캠퍼스만의 분석 리포트를 확인하세요.</p>
                     </div>
-                    {/* Search Bar */}
-                    <div className="relative group">
+                    <div className="relative group w-full md:w-80">
                         <input
                             type="text"
-                            placeholder="관심 있는 키워드를 검색하세요..."
-                            className="w-full md:w-80 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 pl-12 text-white focus:border-aurora-400 outline-none transition-all placeholder:text-mocha-600"
+                            placeholder="키워드를 검색하세요..."
+                            className="w-full bg-white/5 border border-void-700/50 rounded-lg px-4 py-2.5 pl-10 text-sm text-white focus:border-accent-600 focus:bg-white/8 outline-none transition-all placeholder:text-void-600"
                         />
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-mocha-400 w-5 h-5 group-hover:text-aurora-400 transition-colors" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-void-500 w-4 h-4 group-hover:text-void-400 transition-colors" />
                     </div>
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
                     {stats.map((s, i) => (
-                        <div key={i} className="glass p-6 rounded-2xl border border-white/5 flex items-center justify-between group cursor-pointer hover:border-white/20 transition-all">
-                            <div className="flex items-center space-x-4">
-                                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                        <div key={i} className="glass p-5 rounded-2xl border border-void-700/30 flex items-center justify-between group cursor-pointer hover:border-accent-600/30 transition-all">
+                            <div className="flex items-center space-x-3">
+                                <div className="w-10 h-10 rounded-lg bg-accent-600/10 flex items-center justify-center border border-accent-600/20 group-hover:bg-accent-600/15 transition-colors">
                                     {s.icon}
                                 </div>
                                 <div>
-                                    <p className="text-mocha-500 text-sm font-medium">{s.label}</p>
-                                    <p className="text-2xl font-bold text-white group-hover:text-aurora-400 transition-colors">{s.value}</p>
+                                    <p className="text-void-500 text-xs font-medium">{s.label}</p>
+                                    <p className="text-lg font-bold text-white group-hover:text-accent-600 transition-colors">{s.value}</p>
                                 </div>
                             </div>
-                            <ChevronRight className="text-mocha-700 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            <ChevronRight className="text-void-600 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </div>
                     ))}
                 </div>
 
                 {/* Categories & Filter */}
-                <div className="flex flex-wrap items-center gap-3 mb-10">
-                    <div className="p-1 glass rounded-2xl flex flex-wrap gap-1">
+                <div className="flex flex-wrap items-center gap-2 mb-10">
+                    <div className="glass p-1.5 rounded-xl flex flex-wrap gap-1">
                         {categories.map((cat) => (
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
-                                className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${activeCategory === cat ? 'bg-aurora-400 text-mocha-950 shadow-glow' : 'text-mocha-400 hover:text-mocha-100 hover:bg-white/5'}`}
+                                className={`px-5 py-2 rounded-lg text-xs font-semibold transition-all ${activeCategory === cat ? 'bg-accent-600 text-white shadow-lg' : 'text-void-400 hover:text-void-200 hover:bg-white/5'}`}
                             >
                                 {cat}
                             </button>
@@ -131,15 +152,15 @@ export default function InfoBoardPage() {
                 {/* Main Dashboard Content */}
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* List Center */}
-                    <div className="lg:col-span-2 space-y-6">
+                    <div className="lg:col-span-2 space-y-5">
                         {loading ? (
-                            <div className="flex flex-col items-center justify-center py-20 glass rounded-[32px] border border-white/5">
-                                <Loader2 className="w-12 h-12 text-aurora-400 animate-spin mb-4" />
-                                <p className="text-mocha-400 font-medium tracking-widest uppercase text-xs">Syncing Blog Posts...</p>
+                            <div className="flex flex-col items-center justify-center py-20 glass rounded-2xl border border-void-700/30">
+                                <Loader2 className="w-10 h-10 text-accent-600 animate-spin mb-3" />
+                                <p className="text-void-400 font-medium text-xs uppercase tracking-widest">블로그 동기화 중...</p>
                             </div>
                         ) : newsItems.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-20 glass rounded-[32px] border border-white/5">
-                                <p className="text-mocha-400">등록된 게시글이 없습니다.</p>
+                            <div className="flex flex-col items-center justify-center py-20 glass rounded-2xl border border-void-700/30">
+                                <p className="text-void-400 text-sm">등록된 게시글이 없습니다.</p>
                             </div>
                         ) : (
                             newsItems
@@ -150,48 +171,45 @@ export default function InfoBoardPage() {
                                             href={item.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="glass p-5 rounded-[28px] border border-white/5 hover:border-aurora-400/30 transition-all cursor-pointer relative overflow-hidden flex flex-col md:flex-row gap-6 block"
+                                            className="glass p-5 rounded-2xl border border-void-700/30 hover:border-accent-600/40 transition-all cursor-pointer relative overflow-hidden flex flex-col md:flex-row gap-5 block group-hover:bg-white/8"
                                         >
-                                            <div className="w-full md:w-56 h-36 rounded-2xl overflow-hidden shrink-0 relative">
-                                                <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                                                <div className="absolute top-3 left-3 px-3 py-1 bg-mocha-950/80 backdrop-blur-md rounded-lg text-[10px] font-bold text-aurora-400 border border-aurora-400/20 uppercase tracking-widest leading-none flex items-center justify-center text-center">
+                                            <div className="w-full md:w-48 h-32 rounded-xl overflow-hidden shrink-0 relative">
+                                                <img src={item.image} alt={item.title} referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop'; }} />
+                                                <div className="absolute top-2 left-2 px-2 py-1 bg-void-900/80 backdrop-blur rounded-md text-[10px] font-bold text-accent-600 border border-accent-600/20 uppercase tracking-widest">
                                                     {item.category}
                                                 </div>
                                             </div>
                                             <div className="flex-1 flex flex-col justify-between py-1">
                                                 <div>
                                                     <div className="flex items-center space-x-2 mb-2">
-                                                        {item.isHot && <span className="bg-neon-pink/10 text-neon-pink text-[10px] font-black px-2 py-0.5 rounded border border-neon-pink/20">HOT</span>}
-                                                        <span className="text-mocha-500 text-xs">{item.date}</span>
+                                                        {item.isHot && <span className="bg-accent-600/20 text-accent-600 text-[9px] font-black px-2 py-0.5 rounded border border-accent-600/40">HOT</span>}
+                                                        <span className="text-void-500 text-xs">{item.date}</span>
                                                     </div>
-                                                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-aurora-400 transition-colors leading-snug">
+                                                    <h3 className="text-base font-bold text-white mb-2 group-hover:text-accent-600 transition-colors leading-snug break-keep-all">
                                                         {item.title}
                                                     </h3>
                                                 </div>
-                                                <div className="flex items-center justify-between mt-4">
-                                                    <div className="flex items-center space-x-3">
-                                                        <div className="w-6 h-6 rounded-full bg-mocha-800 flex items-center justify-center text-[10px] text-mocha-400 font-bold uppercase">
+                                                <div className="flex items-center justify-between mt-3">
+                                                    <div className="flex items-center space-x-2">
+                                                        <div className="w-5 h-5 rounded-full bg-void-800 flex items-center justify-center text-[8px] text-void-400 font-bold">
                                                             {item.author?.[0] || 'C'}
                                                         </div>
-                                                        <span className="text-mocha-400 text-sm">{item.author}</span>
+                                                        <span className="text-void-400 text-xs break-keep-all">{item.author}</span>
                                                     </div>
-                                                    <div className="flex items-center space-x-4 text-mocha-600">
+                                                    <div className="flex items-center space-x-3 text-void-600 text-xs">
                                                         <div className="flex items-center space-x-1">
-                                                            <Eye className="w-4 h-4" />
-                                                            <span className="text-xs">{item.views}</span>
+                                                            <Eye className="w-3 h-3" />
+                                                            <span>{item.views}</span>
                                                         </div>
-                                                        <Share2 className="w-4 h-4 hover:text-neon-cyan transition-colors" />
+                                                        <Share2 className="w-3 h-3 hover:text-accent-600 transition-colors cursor-pointer" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </a>
                                         {isAdminMode && (
                                             <button
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    setEditingItem(item)
-                                                }}
-                                                className="absolute top-4 right-4 p-2 bg-aurora-400 text-mocha-950 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:scale-110"
+                                                onClick={() => setEditingItem(item)}
+                                                className="absolute top-4 right-4 p-2 bg-accent-600 text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-accent-700"
                                             >
                                                 <Edit3 className="w-4 h-4" />
                                             </button>
@@ -201,46 +219,64 @@ export default function InfoBoardPage() {
                         )}
                     </div>
 
-                    {/* Sidebar - Trending & Info */}
-                    <div className="space-y-8">
+                    {/* Sidebar - Events & Newsletter */}
+                    <div className="space-y-6">
                         {/* Upcoming Events */}
-                        <div className="glass p-8 rounded-[32px] border border-white/5">
-                            <h4 className="text-xl font-bold text-white mb-6 flex items-center">
-                                <Calendar className="mr-3 text-neon-cyan" /> 이번 주 주요 정보
+                        <div className="glass p-6 rounded-2xl border border-void-700/30">
+                            <h4 className="text-base font-bold text-white mb-5 flex items-center break-keep-all">
+                                <Calendar className="w-4 h-4 mr-2 text-accent-600" /> 이번 주 주요 정보
                             </h4>
-                            <div className="space-y-6">
+                            <div className="space-y-4">
                                 {[
                                     { title: '고2 3월 모의고사 대비 특강', date: '01.25(Sat)', time: '14:00' },
                                     { title: '예비고1 학부모 간담회', date: '01.27(Mon)', time: '11:00' },
                                     { title: '심화 수학 클리닉 데이', date: '01.28(Tue)', time: '17:00' },
                                 ].map((event, i) => (
-                                    <div key={i} className="flex space-x-4 items-center group cursor-pointer">
-                                        <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center shrink-0 group-hover:bg-neon-cyan/10 group-hover:border-neon-cyan/20 transition-all">
-                                            <span className="text-[10px] text-mocha-500 uppercase font-black">{event.date.split('(')[1].replace(')', '')}</span>
-                                            <span className="text-lg font-bold text-white group-hover:text-neon-cyan">{event.date.split('.')[1].split('(')[0]}</span>
+                                    <div key={i} className="flex space-x-3 items-center group cursor-pointer">
+                                        <div className="w-12 h-12 rounded-lg bg-white/5 border border-void-700/50 flex flex-col items-center justify-center shrink-0 group-hover:bg-accent-600/10 group-hover:border-accent-600/30 transition-all">
+                                            <span className="text-[8px] text-void-500 uppercase font-bold">{event.date.split('(')[1].replace(')', '')}</span>
+                                            <span className="text-xs font-bold text-white group-hover:text-accent-600">{event.date.split('.')[1].split('(')[0]}</span>
                                         </div>
                                         <div>
-                                            <p className="text-mocha-200 font-bold text-sm mb-1 group-hover:text-white transition-colors">{event.title}</p>
-                                            <p className="text-mocha-500 text-xs">{event.time} @ 엄궁 캠퍼스</p>
+                                            <p className="text-void-200 font-semibold text-xs mb-0.5 group-hover:text-white transition-colors break-keep-all">{event.title}</p>
+                                            <p className="text-void-500 text-xs">{event.time} @ 엄궁</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                            <button className="w-full mt-8 py-4 rounded-2xl bg-white/5 text-mocha-300 text-sm font-bold hover:bg-white/10 transition-colors">
-                                설명회 전체 예약하기
-                            </button>
+                            <Link href="/admissions" className="block w-full mt-6 py-3 rounded-lg bg-white/5 text-void-400 text-xs font-semibold hover:bg-white/8 transition-colors text-center">
+                                상담 예약하기
+                            </Link>
                         </div>
 
                         {/* Newsletter Sub */}
-                        <div className="rounded-[32px] p-1 bg-gradient-to-br from-aurora-400/20 via-transparent to-neon-cyan/20">
-                            <div className="bg-mocha-900/40 backdrop-blur-xl p-8 rounded-[31px] text-center">
-                                <h4 className="text-white font-bold mb-3">입시 레터 구독하기</h4>
-                                <p className="text-mocha-500 text-xs mb-6">최신 입시 정보와 학원 뉴스레터를<br />가장 먼저 이메일로 받아보세요.</p>
-                                <div className="space-y-3">
-                                    <input type="email" placeholder="email@example.com" className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurora-400 outline-none" />
-                                    <button className="btn-primary w-full py-3 text-sm">무료 구독 신청</button>
+                        <div className="glass p-6 rounded-2xl border border-accent-600/20 bg-accent-600/5">
+                            <h4 className="text-base font-bold text-white mb-3 break-keep-all">입시 레터 구독</h4>
+                            <p className="text-void-500 text-xs mb-4 break-keep-all">최신 입시 정보와 학원 뉴스레터를 이메일로 받으세요.</p>
+                            {newsletterStatus === 'success' ? (
+                                <div className="flex items-center gap-2 text-accent-600 text-xs font-semibold py-2">
+                                    <CheckCircle className="w-4 h-4" />
+                                    구독 신청이 완료되었습니다!
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="space-y-2.5">
+                                    <input
+                                        type="email"
+                                        value={newsletterEmail}
+                                        onChange={e => setNewsletterEmail(e.target.value)}
+                                        onKeyDown={e => e.key === 'Enter' && handleNewsletterSubmit()}
+                                        placeholder="email@example.com"
+                                        className="w-full bg-white/5 border border-void-700/50 rounded-lg px-3 py-2 text-xs text-white focus:border-accent-600 focus:bg-white/8 outline-none transition-all placeholder:text-void-600"
+                                    />
+                                    <button
+                                        onClick={handleNewsletterSubmit}
+                                        disabled={newsletterStatus === 'loading' || !newsletterEmail.includes('@')}
+                                        className="btn-primary w-full py-2 text-xs disabled:opacity-50"
+                                    >
+                                        {newsletterStatus === 'loading' ? '처리 중...' : newsletterStatus === 'error' ? '오류 발생 - 다시 시도' : '무료 구독 신청'}
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -248,66 +284,66 @@ export default function InfoBoardPage() {
 
             {/* Edit Modal */}
             {editingItem && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-mocha-950/80 backdrop-blur-md">
-                    <div className="glass w-full max-w-lg p-8 rounded-[32px] border border-white/10 shadow-2xl relative">
-                        <button onClick={() => setEditingItem(null)} className="absolute top-6 right-6 text-mocha-500 hover:text-white transition-colors">
-                            <X className="w-6 h-6" />
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-void-950/80 backdrop-blur-sm">
+                    <div className="glass w-full max-w-md p-8 rounded-2xl border border-void-700/50 shadow-2xl relative">
+                        <button onClick={() => setEditingItem(null)} className="absolute top-5 right-5 text-void-500 hover:text-white transition-colors">
+                            <X className="w-5 h-5" />
                         </button>
 
-                        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                            <Edit3 className="text-aurora-400" /> 게시글 편집
+                        <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                            <Edit3 className="w-4 h-4 text-accent-600" /> 게시글 편집
                         </h2>
 
-                        <form onSubmit={handleUpdatePost} className="space-y-6">
+                        <form onSubmit={handleUpdatePost} className="space-y-5">
                             <div>
-                                <label className="block text-mocha-500 text-xs font-bold uppercase mb-2 tracking-widest">제목</label>
+                                <label className="block text-void-400 text-xs font-semibold mb-2 uppercase tracking-widest">제목</label>
                                 <input
                                     type="text"
                                     value={editingItem.title}
                                     onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-aurora-400 outline-none transition-all"
+                                    className="w-full bg-white/5 border border-void-700/50 rounded-lg px-4 py-2.5 text-sm text-white focus:border-accent-600 focus:bg-white/8 outline-none transition-all"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-mocha-500 text-xs font-bold uppercase mb-2 tracking-widest">카테고리</label>
+                                <label className="block text-void-400 text-xs font-semibold mb-2 uppercase tracking-widest">카테고리</label>
                                 <select
                                     value={editingItem.category}
                                     onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-aurora-400 outline-none transition-all appearance-none"
+                                    className="w-full bg-white/5 border border-void-700/50 rounded-lg px-4 py-2.5 text-sm text-white focus:border-accent-600 focus:bg-white/8 outline-none transition-all appearance-none"
                                 >
                                     {categories.filter(c => c !== '전체').map(c => (
-                                        <option key={c} value={c} className="bg-mocha-900">{c}</option>
+                                        <option key={c} value={c} className="bg-void-900">{c}</option>
                                     ))}
                                 </select>
                             </div>
 
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2">
                                 <input
                                     type="checkbox"
                                     id="isHidden"
                                     checked={editingItem.isHidden || false}
                                     onChange={(e) => setEditingItem({ ...editingItem, isHidden: e.target.checked })}
-                                    className="w-5 h-5 rounded border-white/10 bg-white/5 text-aurora-400 focus:ring-aurora-400"
+                                    className="w-4 h-4 rounded border-void-700/50 bg-white/5 text-accent-600 focus:ring-accent-600"
                                 />
-                                <label htmlFor="isHidden" className="text-mocha-400 text-sm">홈페이지에서 보지 않기 (숨기기)</label>
+                                <label htmlFor="isHidden" className="text-void-400 text-xs">홈페이지에서 숨기기</label>
                             </div>
 
-                            <div className="pt-4 flex gap-3">
+                            <div className="pt-2 flex gap-2.5">
                                 <button
                                     type="button"
                                     onClick={() => setEditingItem(null)}
-                                    className="flex-1 py-4 rounded-2xl bg-white/5 text-mocha-400 font-bold hover:bg-white/10 transition-colors"
+                                    className="flex-1 py-2.5 rounded-lg bg-white/5 text-void-400 font-semibold text-sm hover:bg-white/8 transition-colors"
                                 >
                                     취소
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={isUpdating}
-                                    className="flex-1 py-4 rounded-2xl bg-aurora-400 text-mocha-950 font-bold hover:shadow-glow transition-all flex items-center justify-center gap-2"
+                                    className="flex-1 py-2.5 rounded-lg bg-accent-600 text-white font-semibold text-sm hover:bg-accent-700 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                                 >
-                                    {isUpdating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-                                    저장하기
+                                    {isUpdating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                                    저장
                                 </button>
                             </div>
                         </form>

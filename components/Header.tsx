@@ -2,11 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Menu, X, ChevronRight } from 'lucide-react'
+import { Menu, X, ChevronRight, LogOut, Settings } from 'lucide-react'
+import { useAuth } from '@/lib/auth-context'
+import LoginModal from '@/components/LoginModal'
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
+    const [loginOpen, setLoginOpen] = useState(false)
+    const { user, isAdmin, signOut } = useAuth()
 
     useEffect(() => {
         const handleScroll = () => {
@@ -18,6 +22,7 @@ export default function Header() {
 
     const navLinks = [
         { name: '학원안내', href: '/about' },
+        { name: '개별관리', href: '/management' },
         { name: '입학안내', href: '/admissions' },
         { name: '프로그램', href: '/programs' },
         { name: '입시정보', href: '/info-board' },
@@ -25,76 +30,134 @@ export default function Header() {
     ]
 
     return (
-        <header className={`fixed top-6 left-1/2 -translate-x-1/2 w-full max-w-[95%] z-50 transition-all duration-700 ${scrolled ? 'top-4' : 'top-6'}`}>
-            <nav className={`mx-auto px-8 py-4 flex items-center justify-between premium-glass border border-white/5 backdrop-blur-2xl rounded-[32px] transition-all duration-700 ${scrolled ? 'py-3 bg-black/40' : 'py-5 bg-transparent'}`}>
-                {/* Logo Section */}
-                <Link href="/" className="flex items-center space-x-3 group">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-aurora-400 to-neon-cyan flex items-center justify-center shadow-[0_0_30px_rgba(77,255,145,0.3)] group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
-                        <span className="text-2xl font-black text-mocha-950">차</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-xl font-black tracking-tighter text-white group-hover:text-aurora-400 transition-colors duration-500 uppercase">
-                            CHA MATH
-                        </span>
-                        <span className="text-xs font-bold tracking-[0.3em] text-mocha-500 uppercase">Academy</span>
-                    </div>
-                </Link>
-
-                {/* Desktop Navigation */}
-                <div className="hidden md:flex items-center space-x-10">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            href={link.href}
-                            className="text-mocha-400 hover:text-white text-sm font-black tracking-[0.2em] transition-all relative group py-2 uppercase"
-                        >
-                            {link.name}
-                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-aurora-400 transition-all duration-500 group-hover:w-full group-hover:shadow-[0_0_15px_#4dff91]" />
+        <>
+            <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${scrolled ? 'py-3' : 'py-5'}`}>
+                <nav className="container-main">
+                    <div className={`mx-auto flex items-center justify-between glass rounded-full px-6 py-2.5 transition-all duration-500 ${scrolled ? 'bg-void-950/60 shadow-lg' : ''}`}>
+                        {/* Logo */}
+                        <Link href="/" className="flex items-center group">
+                            <span className="text-base font-bold tracking-tight text-white group-hover:text-accent-400 transition-colors">
+                                엄궁 차수학
+                            </span>
                         </Link>
-                    ))}
-                </div>
 
-                {/* Right Side Actions */}
-                <div className="flex items-center space-x-6">
-                    <button className="hidden md:block text-xs font-black tracking-[0.2em] text-mocha-500 hover:text-white transition-all uppercase">
-                        LOGIN
-                    </button>
-                    <Link href="/admissions" className="bg-white text-black text-xs font-black tracking-[0.2em] px-8 py-3.5 rounded-full hover:bg-aurora-400 hover:shadow-[0_0_30px_rgba(77,255,145,0.5)] transition-all duration-500 uppercase">
-                        ADMISSION
-                    </Link>
+                        {/* Desktop Nav */}
+                        <div className="hidden md:flex items-center gap-1">
+                            {navLinks.map((link) => (
+                                <Link
+                                    key={link.name}
+                                    href={link.href}
+                                    className="text-void-400 hover:text-white text-xs font-medium px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-200"
+                                >
+                                    {link.name}
+                                </Link>
+                            ))}
+                        </div>
 
-                    {/* Mobile Menu Button */}
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="md:hidden p-2 text-white hover:text-aurora-400 transition-colors"
-                    >
-                        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                    </button>
-                </div>
-            </nav>
-
-            {/* Mobile Navigation Drawer */}
-            <div className={`md:hidden absolute top-full left-0 right-0 mt-4 mx-0 transition-all duration-500 origin-top transform ${isOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0 pointer-events-none'}`}>
-                <div className="glass border border-white/10 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl">
-                    <div className="flex flex-col p-4 space-y-2">
-                        {navLinks.map((link) => (
+                        {/* Right Actions */}
+                        <div className="flex items-center gap-3">
+                            {user ? (
+                                <div className="hidden md:flex items-center gap-2">
+                                    {isAdmin && (
+                                        <Link
+                                            href="/admin/admissions"
+                                            className="text-xs font-medium text-accent-400 hover:text-accent-300 transition-colors px-3 py-2 flex items-center gap-1"
+                                        >
+                                            <Settings className="w-3.5 h-3.5" />
+                                            관리자
+                                        </Link>
+                                    )}
+                                    <span className="text-xs text-void-500 max-w-[120px] truncate">
+                                        {user.displayName || user.email?.split('@')[0]}
+                                    </span>
+                                    <button
+                                        onClick={() => signOut()}
+                                        className="text-xs font-medium text-void-500 hover:text-white transition-colors p-2"
+                                        title="로그아웃"
+                                    >
+                                        <LogOut className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => setLoginOpen(true)}
+                                    className="hidden md:block text-xs font-medium text-void-500 hover:text-white transition-colors px-3 py-2"
+                                >
+                                    로그인
+                                </button>
+                            )}
                             <Link
-                                key={link.name}
-                                href={link.href}
-                                onClick={() => setIsOpen(false)}
-                                className="flex items-center justify-between p-4 text-mocha-100 hover:text-aurora-400 hover:bg-white/5 rounded-xl transition-all group"
+                                href="/admissions"
+                                className="hidden md:flex items-center gap-1.5 bg-accent-600 hover:bg-accent-700 text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                             >
-                                <span className="font-medium text-lg">{link.name}</span>
-                                <ChevronRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                                입학상담
+                                <ChevronRight className="w-3.5 h-3.5" />
                             </Link>
-                        ))}
-                        <div className="pt-4 mt-2 border-t border-white/5 grid grid-cols-2 gap-4">
-                            <button className="btn-ghost py-3 rounded-xl border border-white/10">로그인</button>
-                            <button className="btn-primary py-3 rounded-xl">회원가입</button>
+
+                            {/* Mobile Toggle */}
+                            <button
+                                onClick={() => setIsOpen(!isOpen)}
+                                className="md:hidden p-2 text-void-300 hover:text-white transition-colors"
+                                aria-label={isOpen ? '메뉴 닫기' : '메뉴 열기'}
+                            >
+                                {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+
+                {/* Mobile Drawer */}
+                <div className={`md:hidden absolute top-full left-4 right-4 mt-2 transition-all duration-300 origin-top ${isOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0 pointer-events-none'}`}>
+                    <div className="glass rounded-2xl overflow-hidden">
+                        <div className="flex flex-col p-3 gap-0.5">
+                            {navLinks.map((link) => (
+                                <Link
+                                    key={link.name}
+                                    href={link.href}
+                                    onClick={() => setIsOpen(false)}
+                                    className="flex items-center justify-between p-3.5 text-void-200 hover:text-white hover:bg-white/5 rounded-xl transition-all group"
+                                >
+                                    <span className="text-sm font-medium">{link.name}</span>
+                                    <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-void-500" />
+                                </Link>
+                            ))}
+                            {isAdmin && (
+                                <Link
+                                    href="/admin/admissions"
+                                    onClick={() => setIsOpen(false)}
+                                    className="flex items-center justify-between p-3.5 text-accent-400 hover:text-accent-300 hover:bg-white/5 rounded-xl transition-all group"
+                                >
+                                    <span className="text-sm font-medium flex items-center gap-2">
+                                        <Settings className="w-4 h-4" />
+                                        관리자 페이지
+                                    </span>
+                                    <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-void-500" />
+                                </Link>
+                            )}
+                            <div className="pt-3 mt-2 border-t border-white/5 grid grid-cols-2 gap-2">
+                                {user ? (
+                                    <button
+                                        onClick={() => { signOut(); setIsOpen(false) }}
+                                        className="btn-ghost py-3 rounded-xl text-xs"
+                                    >
+                                        로그아웃
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => { setLoginOpen(true); setIsOpen(false) }}
+                                        className="btn-ghost py-3 rounded-xl text-xs"
+                                    >
+                                        로그인
+                                    </button>
+                                )}
+                                <Link href="/admissions" className="btn-primary py-3 rounded-xl text-xs justify-center">입학상담</Link>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </header>
+            </header>
+
+            <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
+        </>
     )
 }
