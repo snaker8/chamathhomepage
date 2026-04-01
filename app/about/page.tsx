@@ -79,7 +79,7 @@ export default function AboutPage() {
                             <div className="mt-10 flex items-center space-x-4">
                                 <div className="h-0.5 w-12 bg-accent-600" />
                                 <div>
-                                    <span className="text-xl font-bold text-white block">원장 임세현</span>
+                                    <span className="text-xl font-bold text-white block">차수학 원장</span>
                                     <span className="text-void-500 text-xs font-medium">수학교육 전문 디렉터 / 대입 입시 전문가</span>
                                 </div>
                             </div>
