@@ -1,3 +1,5 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,8 +11,6 @@
    - Font: Pretendard (Korean-first)
    - Philosophy: Premium Minimalism + Glass Morphism
    ============================================================ */
-
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css');
 
 :root {
   /* Color System */
