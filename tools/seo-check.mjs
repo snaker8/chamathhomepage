@@ -110,3 +110,7 @@ report(
   ],
   false
 )
+
+// 명시적으로 끝낸다. Node 의 fetch(undici)가 keep-alive 소켓을 물고 있어
+// 그냥 두면 프로세스가 안 죽고, 작업 스케줄러에 계속 「실행 중」으로 남는다.
+process.exit(0)
