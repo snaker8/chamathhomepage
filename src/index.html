@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>엄궁차수학학원 | 우리 반 진도가 아니라, 우리 아이 진도</title>
+<meta name="description" content="부산 사상구 엄궁 초·중·고 수학. 원장 경력 21년. 자체 진단 테스트로 실력을 먼저 재고, 학생별로 교재를 지정합니다. 상담 051-311-0312">
+<meta name="format-detection" content="telephone=yes">
+<meta name="theme-color" content="#191D20">
+<!-- 네이버 서치어드바이저 소유확인. 확인이 끝나도 지우면 안 된다 — 지우면 소유확인이 풀린다. -->
+<meta name="naver-site-verification" content="bc09e5023910e08e0080003337a9eaa2a470a489">
+<meta property="og:type" content="website">
+<meta property="og:title" content="엄궁차수학학원 | 우리 반 진도가 아니라, 우리 아이 진도">
+<meta property="og:description" content="부산 사상구 엄궁 초·중·고 수학. 원장 경력 21년. 학생별 교재 지정 · 단원평가 통과제 · 지역 5개 학교 내신 대비.">
+<!-- 공유 썸네일: 로고 없이 타이포만으로 만든 전용 카드(1200x630).
+     사진을 쓰지 않으므로 초점·해상도 문제가 없고, 카톡 썸네일(약 300px)에서 헤드라인이 그대로 읽힌다.
+     ⚠️ og:image는 반드시 절대 URL이어야 한다. 상대경로면 카톡·숨고 스크래퍼가 못 가져온다. -->
+<link rel="canonical" href="https://chamath-site.vercel.app/">
+<meta property="og:url" content="https://chamath-site.vercel.app/">
+<meta property="og:image" content="https://chamath-site.vercel.app/photos/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="ko_KR">
+<!-- 지역 검색용 구조화 데이터. 실행되는 스크립트가 아니라 데이터라 "외부 요청 0" 원칙과 무관하다.
+     ⚠️ 페이지에 실제로 적혀 있는 사실만 넣는다. 평점(aggregateRating)·수강생 수 같은 건
+     검증 불가라 절대 넣지 않는다 — 구글이 거짓 리치결과로 판단하면 역효과다.
+     ⚠️ url/og:image는 배포 도메인 확보 후 절대 URL로 채운다. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["EducationalOrganization", "LocalBusiness"],
+  "name": "엄궁차수학학원",
+  "alternateName": "차수학 엄궁캠퍼스",
+  "url": "https://chamath-site.vercel.app/",
+  "image": "https://chamath-site.vercel.app/photos/og-cover.jpg",
+  "description": "부산 사상구 엄궁 초·중·고 수학. 자체 진단 테스트로 실력을 먼저 재고 학생별로 교재를 지정하는 개별 진도 학원.",
+  "telephone": "+82-51-311-0312",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "엄궁로 186, 2층",
+    "addressLocality": "사상구",
+    "addressRegion": "부산광역시",
+    "addressCountry": "KR"
+  },
+  "areaServed": { "@type": "Place", "name": "부산광역시 사상구 엄궁동" },
+  "knowsAbout": ["초등 수학", "중등 수학", "고등 수학", "내신 대비", "개별 진도"],
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "opens": "14:30", "closes": "22:00" },
+    { "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Saturday","Sunday"],
+      "opens": "15:00", "closes": "20:00" }
+  ],
+  "sameAs": [
+    "https://blog.naver.com/maxmath33",
+    "https://www.instagram.com/ug.chamath/",
+    "https://pf.kakao.com/_YLxhxaG"
+  ]
+}
+</script>
+<style>
+/* ═══════════════════════════════════════════════════════════
+   엄궁차수학학원 — 원페이지 (v2)
+   문법: 럭셔리 브랜드. 여백이 콘텐츠, 타이포가 주인공.
+   색   : 따뜻한 오프화이트 / 깊은 차콜 지배
+        + 골드 헤어라인(#B8A06A) 액센트
+        + 브랜드 노랑(#FFC400)은 1차 CTA 버튼 단 한 종류에만
+   사진 : 3장. 판서 2 + 복도 1. 첫 화면과 두 번째 화면에는 사진이 없다.
+        파일명은 전부 ASCII (한글 파일명은 호스팅·URL 인코딩에서 문제를 만든다).
+        복도 사진은 먹색 밴드 위에 얹어 밝기 차를 덮는다.
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root{
+  --ink:     #15181B;   /* 본문 */
+  --ink-2:   #4C5257;   /* 보조 본문 */
+  --ink-3:   #666C71;   /* 캡션 */
+  --paper:   #F6F3EE;   /* 따뜻한 오프화이트 (순백 아님) */
+  --paper-2: #EDE9E1;
+  --char:    #191D20;   /* 깊은 차콜 (순흑 아님) */
+  --char-2:  #22272A;
+  --gold:    #B8A06A;   /* 골드 — 얇은 선·다크 배경 위 텍스트 */
+  --gold-d:  #7A6636;   /* 골드 — 밝은 배경 위 텍스트 (대비 5.0:1) */
+  --line:    #DDD8CD;
+  --line-w:  rgba(255,255,255,.16);
+  --cta:     #FFC400;   /* ★ 이 값은 .btn--primary 한 곳에서만 쓴다 */
+
+  --wrap: 1040px;   /* 콘텐츠 최대폭 (v1 대비 축소 지향) */
+  --col:  660px;    /* 읽는 글의 최대폭 */
+  --pad:  20px;
+  --bar:  64px;
+}
+
+html{ -webkit-text-size-adjust: 100%; }
+html, body{ max-width: 100%; overflow-x: hidden; }
+
+body{
+  margin: 0;
+  padding-bottom: calc(var(--bar) + env(safe-area-inset-bottom, 0px));
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  font-size: 17px;
+  line-height: 1.85;
+  letter-spacing: -0.008em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+
+img{ display: block; max-width: 100%; height: auto; }
+a{ color: inherit; }
+
+.wrap{ width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--pad); }
+.col{ max-width: var(--col); }
+
+/* ── 여백이 콘텐츠다 : v1의 54/76px → 2배 이상 ── */
+section{ padding: 104px 0; }
+.sep{ border-top: 1px solid var(--line); }
+
+/* ── 타이포 스케일 ── */
+.label{
+  display: block; margin: 0 0 26px;
+  color: var(--gold-d);
+  font-size: 12px; font-weight: 600; line-height: 1.6;
+  letter-spacing: .24em;
+}
+h1{
+  margin: 0;
+  font-size: clamp(34px, 9vw, 66px);
+  line-height: 1.2;
+  letter-spacing: -0.042em;
+  font-weight: 700;
+}
+h1 .thin{
+  display: block; margin-bottom: 14px;
+  font-size: clamp(16px, 4.1vw, 24px);
+  font-weight: 400; line-height: 1.6;
+  color: #8E959B; letter-spacing: -0.005em;
+}
+h2{
+  margin: 0;
+  font-size: clamp(26px, 6.4vw, 40px);
+  line-height: 1.34;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+}
+h2 .thin{ font-weight: 300; color: var(--ink-3); }
+h3{ margin: 0 0 8px; font-size: clamp(18px, 4.4vw, 20px); line-height: 1.55; font-weight: 700; letter-spacing: -0.02em; }
+p{ margin: 0 0 18px; color: var(--ink-2); }
+p:last-child{ margin-bottom: 0; }
+.lead{ font-size: clamp(18px, 4.6vw, 21px); line-height: 1.72; color: var(--ink); font-weight: 500; letter-spacing: -0.02em; }
+.small{ font-size: 15px; color: var(--ink-3); line-height: 1.75; }
+
+.rule{ width: 44px; height: 1px; background: var(--gold); border: 0; margin: 30px 0; }
+.rule--w{ background: rgba(184,160,106,.75); }
+
+/* ── 진입 페이드업 (스크립트 없음 · 지원 브라우저에서만) ──
+   주의: .rv는 "아래로 더 스크롤할 여지가 남아 있는" 블록에만 붙인다.
+   마지막 섹션(#contact)에 붙이면 페이지 끝까지 내려도 범위를 다 못 채워
+   반투명 상태로 굳는다(실측 확인). 그래서 상담 섹션은 대상에서 제외. */
+@keyframes rise{ from{ opacity: 0; transform: translateY(18px); } to{ opacity: 1; transform: none; } }
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .rv{
+      animation: rise 1ms linear both;
+      animation-timeline: view();
+      animation-range: cover 2% cover 14%;
+    }
+  }
+}
+
+/* ═══════ 버튼 ═══════ */
+.btn{
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px; flex-wrap: wrap;
+  min-height: 58px; padding: 14px 22px;
+  border: 1px solid transparent; border-radius: 2px;
+  font-size: 16px; font-weight: 700; line-height: 1.4; letter-spacing: .005em;
+  text-decoration: none; text-align: center;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, opacity .18s ease;
+}
+.btn__num{ font-weight: 500; opacity: .78; font-size: 15px; }
+
+/* ★ 노랑이 존재하는 유일한 컴포넌트 */
+.btn--primary{ background: var(--cta); color: var(--ink); border-color: var(--cta); }
+.btn--primary:hover{ opacity: .88; }
+
+/* 나머지는 전부 무채색 / 골드 */
+.btn--onDark{ background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+.btn--onDark:hover{ border-color: #fff; background: rgba(255,255,255,.06); }
+.btn--onLight{ background: transparent; color: var(--ink); border-color: rgba(21,24,27,.42); }
+.btn--onLight:hover{ border-color: var(--ink); background: rgba(21,24,27,.04); }
+.btns{ display: grid; gap: 10px; margin-top: 36px; }
+
+/* 조용한 링크 (골드 밑줄) */
+.quiet{
+  display: inline-block;
+  font-size: 16px; font-weight: 600; text-decoration: none;
+  color: var(--ink); border-bottom: 1px solid var(--gold);
+  padding-bottom: 3px;
+}
+.quiet:hover{ border-bottom-color: var(--ink); }
+
+/* ═══════ 1. 히어로 ═══════ */
+.hero{
+  background: var(--char);
+  color: #fff;
+  /* 아래 플레이트가 먹색을 이어받던 자리라 하단 여백이 짧았다.
+     플레이트를 뺀 지금은 히어로가 먹색 블록을 혼자 끝내므로 섹션 리듬(104/140/176)에 맞춘다. */
+  padding: 112px 0 104px;
+}
+.hero .eyebrow{
+  margin: 0 0 40px; color: var(--gold);
+  font-size: 12px; font-weight: 600; letter-spacing: .24em; line-height: 1.7;
+}
+.hero .eyebrow span{ color: #7C838A; letter-spacing: .12em; }
+.hero .sub{ margin: 0; color: #B9C0C6; font-size: clamp(17px, 4.4vw, 19px); line-height: 1.8; }
+.hero .sub b{ color: #fff; font-weight: 600; }
+.hero .hours{
+  margin: 30px 0 0; color: #767D84;
+  font-size: 13px; letter-spacing: .06em;
+}
+
+/* 브랜드 플레이트(.plate-sec/.plate) 규칙은 사진 제거와 함께 삭제.
+   재촬영본으로 되살릴 때는 design-note §17의 크기 규칙을 먼저 볼 것 —
+   2배 밀도 화면에서 업스케일이 걸리지 않으려면 파일 폭 ≥ (표시폭 × 2). */
+
+/* ═══════ 2. 숫자 ═══════ */
+.facts{ list-style: none; margin: 0; padding: 0; display: grid; gap: 48px; }
+.facts li{ padding-top: 22px; border-top: 1px solid var(--gold); }
+.facts .n{
+  display: block;
+  font-size: clamp(52px, 14vw, 88px); font-weight: 200; line-height: 1;
+  letter-spacing: -0.05em; color: var(--ink);
+}
+.facts .n i{ font-style: normal; font-size: .26em; font-weight: 500; letter-spacing: 0; margin-left: 8px; vertical-align: .32em; }
+.facts .t{ display: block; margin-top: 22px; font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+.facts .d{ display: block; margin-top: 8px; font-size: 15px; color: var(--ink-2); line-height: 1.75; }
+
+/* ═══════ 3. 문제 ═══════ */
+.pains{ list-style: none; margin: 56px 0 0; padding: 0; display: grid; gap: 44px; }
+.pains li{ padding-top: 24px; border-top: 1px solid var(--line); }
+.pains .ix{
+  display: block; margin-bottom: 14px;
+  font-size: 12px; font-weight: 600; letter-spacing: .2em; color: var(--gold-d);
+}
+.pains p{ margin: 0; font-size: 16px; }
+
+/* ═══════ 4. 개별 진도 루프 ═══════ */
+.loop{ list-style: none; margin: 56px 0 0; padding: 0; }
+.loop li{ position: relative; display: grid; grid-template-columns: 52px 1fr; gap: 0 4px; padding-bottom: 44px; }
+.loop li:last-child{ padding-bottom: 0; }
+.loop .ix{
+  font-size: 13px; font-weight: 600; letter-spacing: .12em; color: var(--gold-d);
+  line-height: 2.1;
+}
+.loop li::before{
+  content: ""; position: absolute; left: 6px; top: 34px; bottom: 6px;
+  width: 1px; background: var(--line);
+}
+.loop li:last-child::before{ display: none; }
+.loop p{ margin: 0; font-size: 16px; }
+
+/* 이 페이지에서 유일하게 "꽉 찬 순간"을 만드는 블록.
+   12,000px를 같은 밀도로 흘려보내지 않기 위해 여기서만 폭·크기를 키운다. */
+.pull{
+  margin: 92px 0 0; padding: 46px 0 0;
+  border-top: 1px solid var(--gold);
+  font-size: clamp(26px, 6.4vw, 46px); line-height: 1.4; letter-spacing: -0.045em;
+  font-weight: 700; color: var(--ink);
+  max-width: 900px;
+}
+.pull span{ display: block; margin-top: 22px; font-size: 16px; font-weight: 400; color: var(--ink-2); letter-spacing: -0.01em; line-height: 1.8; }
+
+/* ═══════ 5. 5대 기둥 ═══════ */
+.pillars{ list-style: none; margin: 56px 0 0; padding: 0; display: grid; gap: 40px; }
+.pillars li{ padding-top: 22px; border-top: 1px solid var(--line); }
+.pillars .ix{ display: block; margin-bottom: 12px; font-size: 12px; font-weight: 600; letter-spacing: .2em; color: var(--gold-d); }
+.pillars p{ margin: 0; font-size: 16px; }
+/* 2단에서 5번째가 혼자 남아 오른쪽이 통째로 비는 것을 막는다.
+   마지막 항목은 두 칸을 걸치고 금색 선으로 받아 마무리 역할을 준다. */
+.pillars li:last-child{ border-top-color: var(--gold); }
+
+/* ═══════ 판서 — 「뼈대 학습법」을 말로 설명하지 않고 그대로 보여준다 ═══════ */
+.board{ margin: 76px 0 0; }
+.board__pair{ display: grid; gap: 26px; }
+.board__one img{ width: 100%; box-shadow: inset 0 0 0 1px rgba(21,24,27,.12); }
+.board .bc{
+  display: block; margin-top: 13px;
+  font-size: 11px; font-weight: 600; letter-spacing: .2em; color: var(--gold-d);
+}
+/* 모바일에서 판서는 335px로 줄어 글씨를 못 읽는다. 원본을 새 탭에서 열어
+   핀치줌으로 볼 수 있게 이미지와 캡션을 통째로 링크로 감쌌다 (스크립트 없음). */
+.board__link{ display: block; text-decoration: none; color: inherit; }
+.board__link img{ transition: opacity .18s ease; }
+.board__link:hover img{ opacity: .9; }
+.board .bc em{
+  font-style: normal; margin-left: 9px; letter-spacing: .12em;
+  color: var(--ink-3); border-bottom: 1px solid var(--gold); padding-bottom: 2px;
+  white-space: nowrap;
+}
+.board figcaption{ margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--gold); }
+.board .bt{ display: block; font-size: 12px; font-weight: 600; letter-spacing: .2em; color: var(--gold-d); }
+.board .bd{ display: block; margin-top: 14px; font-size: 16px; line-height: 1.85; color: var(--ink-2); max-width: var(--col); }
+
+/* ═══════ 엄궁캠퍼스 — 페이지 중간의 어두운 밴드
+   사진 밝기가 서로 달라도 한 세트로 보이도록 먹색 위에 얹는다. ═══════ */
+.campus{ background: var(--char); color: #fff; }
+.campus .label{ color: var(--gold); }
+.campus h2{ color: #fff; }
+.campus h2 .thin{ color: #8E959B; }
+.campus .lead{ color: #B9C0C6; }
+.campus .rule{ background: rgba(184,160,106,.75); }
+/* 공간 사진 1장. 2단에 1장만 남기면 오른쪽이 통째로 비어 고아가 되므로 단일 블록으로 둔다.
+   ⚠️ 폭 상한 660px — 파일이 1400px이라 2배 밀도에서 1320px, 여기가 업스케일 한계다 (§19). */
+.shots{ margin: 60px 0 0; max-width: var(--col); }
+.shots figure{ margin: 0; }
+.shots img{ width: 100%; filter: brightness(.92) contrast(1.03); }
+.shots figcaption{ margin-top: 16px; font-size: 11px; font-weight: 600; letter-spacing: .2em; color: #7C838A; }
+.cnote{ margin: 48px 0 0; padding-top: 22px; border-top: 1px solid var(--line-w); font-size: 14px; color: #7C838A; }
+
+/* ═══════ 6. 원장 ═══════ */
+.director{ background: var(--paper-2); }
+.who{ margin: 44px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 18px; }
+.who .nm{ font-size: clamp(22px, 5.6vw, 30px); font-weight: 700; letter-spacing: -0.035em; }
+.who .yr{ font-size: 13px; font-weight: 600; letter-spacing: .18em; color: var(--gold-d); }
+.cv{ list-style: none; margin: 34px 0 0; padding: 0; display: grid; gap: 30px; }
+.cv li{ padding-top: 20px; border-top: 1px solid var(--line); }
+.cv b{ display: block; font-size: 16px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+.cv span{ display: block; font-size: 16px; color: var(--ink-2); }
+
+/* ═══════ 7. 학년별 ═══════ */
+.grades{ display: grid; gap: 44px; margin-top: 56px; }
+.grade{ display: flex; flex-direction: column; padding-top: 24px; border-top: 1px solid var(--gold); }
+.grade .gt{ display: block; margin-bottom: 14px; font-size: 12px; font-weight: 600; letter-spacing: .22em; color: var(--gold-d); }
+.grade h3{ margin-bottom: 24px; }
+.grade dl{ margin: 0 0 28px; display: grid; grid-template-columns: 92px 1fr; gap: 14px 12px; }
+.grade dt{ font-size: 14px; font-weight: 600; color: var(--ink-3); letter-spacing: .04em; line-height: 2; }
+.grade dd{ margin: 0; }
+.grade .v{ font-size: clamp(20px, 5vw, 24px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.6; }
+.grade .memo{ display: block; margin-top: 4px; font-size: 15px; color: var(--ink-2); font-weight: 400; }
+.grade dl{ margin-bottom: 0; }
+.note{ margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 15px; color: var(--ink-2); line-height: 1.8; }
+
+/* ═══════ 8. 지역 내신 ═══════ */
+.schools{ list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.schools li{
+  padding: 20px 4px; border-top: 1px solid var(--line);
+  font-size: clamp(18px, 4.6vw, 21px); font-weight: 600; letter-spacing: -0.02em;
+}
+.maat{ margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--gold); }
+.maat p{ margin: 0; font-size: 16px; }
+
+/* ═══════ 9. 성장기록 ═══════ */
+.record{ background: var(--char); color: #fff; }
+.record .label{ color: var(--gold); }
+.record h2{ color: #fff; }
+.record .lead{ color: #E7EAEC; }
+.record p{ color: #A9B1B7; }
+.rec{ list-style: none; margin: 52px 0 0; padding: 0; display: grid; gap: 0; }
+.rec li{ padding: 22px 0; border-top: 1px solid var(--line-w); font-size: 16px; color: #D3D8DC; }
+.rec li:last-child{ border-bottom: 1px solid var(--line-w); }
+.sample{ margin-top: 52px; padding: 30px 24px; background: rgba(255,255,255,.045); }
+.sample .st{ display: block; margin-bottom: 20px; font-size: 12px; font-weight: 600; letter-spacing: .2em; color: var(--gold); }
+.sample table{ width: 100%; border-collapse: collapse; }
+.sample th, .sample td{ text-align: left; padding: 13px 0; border-bottom: 1px solid var(--line-w); vertical-align: top; line-height: 1.7; font-size: 15px; }
+.sample th{ width: 88px; padding-right: 14px; color: #8B9298; font-weight: 600; }
+.sample td{ color: #E7EAEC; font-weight: 500; }
+.sample tr:last-child th, .sample tr:last-child td{ border-bottom: none; }
+.record .small{ color: #767D84; }
+
+/* ═══════ 10. 상담 ═══════ */
+.contact{ background: var(--paper-2); }
+.ch{ display: grid; gap: 12px; margin-top: 40px; }
+.links{ margin: 40px 0 0; padding: 0; list-style: none; display: grid; gap: 0; }
+.links li{ border-top: 1px solid var(--line); }
+.links a{
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  padding: 20px 2px; min-height: 56px;
+  text-decoration: none; font-size: 17px; font-weight: 600; letter-spacing: -0.02em;
+}
+.links a span{ font-size: 13px; font-weight: 500; color: var(--ink-3); letter-spacing: .04em; white-space: nowrap; }
+.links li:last-child{ border-bottom: 1px solid var(--line); }
+.info{ margin-top: 56px; display: grid; gap: 34px; }
+.info dt{ font-size: 12px; font-weight: 600; letter-spacing: .2em; color: var(--gold-d); margin-bottom: 12px; }
+.info dd{ margin: 0; font-size: 17px; line-height: 1.8; font-weight: 500; }
+.info dd .small{ display: block; margin-top: 6px; font-weight: 400; }
+
+/* ═══════ 푸터 ═══════ */
+footer{ background: var(--char); color: #7C838A; padding: 72px 0 84px; font-size: 14px; line-height: 1.9; }
+footer .fn{ color: #fff; font-size: 17px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 20px; }
+footer p{ color: #7C838A; margin: 0; }
+footer a{ color: #B0B7BD; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.18); }
+footer .fl{ margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line-w); display: flex; flex-wrap: wrap; gap: 10px 22px; }
+footer .fnote{ margin-top: 26px; font-size: 12px; letter-spacing: .06em; color: #5C6369; }
+
+/* ═══════ 스티키 바 (맨 아래 — 전 해상도 유지) ═══════ */
+.sticky{
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  background: rgba(21,24,27,.96);
+  border-top: 1px solid var(--line-w);
+  padding: 7px var(--pad) calc(7px + env(safe-area-inset-bottom, 0px));
+}
+.sticky .in{ max-width: 520px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sticky .btn{ min-height: 50px; padding: 10px 12px; font-size: 15px; }
+/* 첫 화면에서는 히어로에 이미 같은 버튼 2개가 있다. 고정바까지 겹치면
+   한 화면에 카톡 버튼이 두 번 나오고, 화면 짧은 기기에서는 히어로를 덮는다.
+   히어로 CTA가 보이는 동안은 내려두고, 지나가면 올라온다 (JS가 토글). */
+.sticky{ transition: transform .3s ease, opacity .3s ease; }
+.sticky--off{ transform: translateY(105%); opacity: 0; pointer-events: none; }
+
+/* ═══════ 세로 상담 레일 (데스크톱 전용)
+   좁은 화면에서는 존재하지 않는다. 하단 스티키 바가 그 역할을 한다.
+   화면 오른쪽 빈 여백에 세워 두는 스모크 글라스 스트립 — 배경이 크림이든
+   먹색이든 같은 톤으로 얹히도록 어두운 반투명 + 블러로 처리한다. */
+.rail{ display: none; }
+
+@media (min-width: 1120px){
+  .rail{
+    display: block;
+    position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+    z-index: 55;
+  }
+  /* 기본 = 밝은 섹션 위. 반투명 흰 유리 + 먹색 글자.
+     어두운 섹션 위로 들어가면 아래 .rail--dark 로 뒤집는다 (JS가 토글). */
+  .rail__in{
+    display: flex; flex-direction: column;
+    background: rgba(255,255,255,.5);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    backdrop-filter: blur(18px) saturate(150%);
+    border: 1px solid rgba(30,34,38,.13);
+    border-right: 0;
+    border-radius: 2px 0 0 2px;
+    box-shadow: -16px 0 48px rgba(30,34,38,.09);
+    overflow: hidden;
+    transition: background .5s ease, border-color .5s ease, box-shadow .5s ease;
+  }
+  .rail a{
+    writing-mode: vertical-rl;
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px 15px;
+    font-size: 13px; font-weight: 600; letter-spacing: .26em;
+    color: var(--ink); text-decoration: none;
+    transition: background .3s ease, color .3s ease, letter-spacing .3s ease;
+  }
+  .rail a + a{ border-top: 1px solid rgba(30,34,38,.13); transition: border-color .5s ease; }
+  .rail .tel{ position: relative; }
+  /* 전화 항목만 금색 실선으로 한 번 세운다 — 노랑은 hover에서만 등장 */
+  .rail .tel::before{
+    content: ""; position: absolute; left: 0; top: 16px; bottom: 16px;
+    width: 2px; background: var(--gold);
+  }
+  .rail .tel .n{
+    margin-top: 15px; font-size: 12px; font-weight: 500;
+    letter-spacing: .1em; opacity: .62;
+  }
+  .rail a:hover{ letter-spacing: .3em; }
+  .rail a:not(.tel):hover{ background: rgba(30,34,38,.07); }
+  .rail .tel:hover{ background: var(--cta); }
+
+  /* 어두운 섹션 위 */
+  .rail--dark .rail__in{
+    background: rgba(18,21,24,.44);
+    border-color: rgba(255,255,255,.17);
+    box-shadow: -16px 0 48px rgba(0,0,0,.26);
+  }
+  .rail--dark a{ color: rgba(255,255,255,.95); }
+  .rail--dark a + a{ border-top-color: rgba(255,255,255,.16); }
+  .rail--dark a:not(.tel):hover{ background: rgba(255,255,255,.11); }
+  .rail--dark .tel:hover{ background: var(--cta); color: var(--ink); }
+
+  /* backdrop-filter 미지원 브라우저에서 회색 판때기로 보이지 않도록 */
+  @supports not (backdrop-filter: blur(1px)){
+    .rail__in{ background: rgba(250,248,243,.94); }
+    .rail--dark .rail__in{ background: rgba(18,21,24,.9); }
+  }
+
+  /* 레일이 서는 화면에서는 하단 바의 높이만 낮춘다.
+     반투명으로 낮추면 크림 배경 위에서 그냥 회색 띠가 되므로 먹색은 유지한다. */
+  .sticky .in{ max-width: 460px; }
+  .sticky .btn{ min-height: 42px; font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .rail a{ transition: none; }
+  .rail a:hover{ letter-spacing: .26em; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; animation: none !important; }
+}
+
+/* ═══════════ 확장 ═══════════ */
+@media (min-width: 600px){
+  :root{ --pad: 32px; }
+  body{ font-size: 18px; }
+  section{ padding: 140px 0; }
+  .hero{ padding: 152px 0 140px; }
+  .btns{ grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 520px; }
+  .facts{ grid-template-columns: repeat(3, 1fr); gap: 36px; }
+  .pains{ grid-template-columns: 1fr 1fr; gap: 48px; }
+  .pillars{ grid-template-columns: 1fr 1fr; gap: 48px 44px; }
+  .pillars li:last-child{ grid-column: 1 / -1; }
+  .cv{ grid-template-columns: 1fr 1fr; gap: 36px 44px; }
+  .ch{ grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 560px; }
+  .info{ grid-template-columns: repeat(2, 1fr); gap: 44px; }
+}
+
+@media (min-width: 900px){
+  section{ padding: 176px 0; }
+  .hero{ padding: 190px 0 176px; }
+  .grades{ grid-template-columns: repeat(3, 1fr); gap: 44px 40px; }
+  .schools{ grid-template-columns: repeat(5, 1fr); }
+  .schools li{ padding: 22px 6px 22px 0; }
+  .links{ grid-template-columns: 1fr 1fr; column-gap: 44px; }
+  .links li:nth-last-child(2){ border-bottom: 1px solid var(--line); }
+  .info{ grid-template-columns: repeat(4, 1fr); }
+  .sample{ padding: 44px 40px; max-width: 620px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ 히어로 ══════════ -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">차수학 엄궁캠퍼스<br><span>부산 사상구 엄궁 · 초 · 중 · 고 수학</span></p>
+    <h1><span class="thin">우리 반 진도가 아니라,</span>우리 아이 진도</h1>
+    <hr class="rule rule--w">
+    <p class="sub col">
+      <b>수학 지도 경력 21년.</b> 원장이 직접 설계합니다.<br>
+      반에 아이를 맞추지 않습니다. 아이에게 교재를 맞춥니다.
+    </p>
+    <div class="btns">
+      <a class="btn btn--primary" href="tel:051-311-0312">전화 상담 <span class="btn__num">051-311-0312</span></a>
+      <a class="btn btn--onDark" href="https://pf.kakao.com/_YLxhxaG" target="_blank" rel="noopener">카카오톡 상담</a>
+    </div>
+    <p class="hours">상담 · 평일 14:30–22:00 &nbsp;/&nbsp; 주말 15:00–20:00</p>
+  </div>
+</header>
+
+<!-- 브랜드 플레이트(로고 벽 사진)는 제거됨 — 원본 초점이 나가 있고 2배 밀도 화면에서
+     업스케일까지 걸려 첫인상을 깎았다. 재촬영본이 오면 여기로 되돌린다(design-note §17).
+     첫 사진은 이제 04 기둥 끝의 판서다. -->
+
+<!-- ══════════ 01 사실 ══════════ -->
+<section id="facts">
+  <div class="wrap rv">
+    <p class="label">01 &nbsp;—&nbsp; 사실</p>
+    <ul class="facts">
+      <li>
+        <span class="n">21<i>년</i></span>
+        <span class="t">원장 수학 지도 경력</span>
+        <span class="d">초등부터 고등까지 전 과정을 한 사람이 봐 왔습니다.</span>
+      </li>
+      <li>
+        <span class="n">5<i>곳</i></span>
+        <span class="t">집중 분석 지역 학교</span>
+        <span class="d">엄궁중 · 학장중 · 주례여고 · 구덕고 · 서여고.</span>
+      </li>
+      <li>
+        <span class="n">3–5<i>개년</i></span>
+        <span class="t">학교별 기출 분석</span>
+        <span class="d">학교마다 시험이 다릅니다. 그 학교 시험지를 봅니다.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ 02 문제 ══════════ -->
+<section class="sep" id="problem">
+  <div class="wrap rv">
+    <p class="label">02 &nbsp;—&nbsp; 왜 진도가 문제인가</p>
+    <div class="col">
+      <h2>수학은 앞이 비면<br><span class="thin">뒤가 무너집니다</span></h2>
+      <hr class="rule">
+      <p class="lead">학부모님이 이미 겪고 계신 두 가지입니다.</p>
+    </div>
+    <ul class="pains">
+      <li>
+        <span class="ix">01</span>
+        <h3>같은 반인데 우리 아이만 못 따라갑니다</h3>
+        <p>반 진도는 평균에 맞춰 나갑니다. 이해하지 못한 단원을 안은 채 다음 단원으로 넘어가면, 그 구멍은 학년이 올라갈수록 커집니다. 아이가 못하는 게 아니라 넘어간 자리가 남아 있는 것입니다.</p>
+      </li>
+      <li>
+        <span class="ix">02</span>
+        <h3>학원을 옮길 때마다 0에서 다시 시작합니다</h3>
+        <p>어느 단원을 어디까지 했는지, 무엇을 반복해서 틀렸는지가 기록으로 남지 않습니다. 그래서 새 학원은 늘 처음부터 다시 시작합니다. 잃어버리는 건 시간입니다.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ 03 개별 진도 ══════════ -->
+<section class="sep" id="progress">
+  <div class="wrap rv">
+    <p class="label">03 &nbsp;—&nbsp; 개별 진도가 도는 방식</p>
+    <div class="col">
+      <h2>우리 아이 교재가<br><span class="thin">옆자리 아이와 다릅니다</span></h2>
+      <hr class="rule">
+      <p class="lead">반을 먼저 정하고 그 안에 학생을 넣는 구조가 아닙니다. 학생의 실력을 먼저 재고, 거기서 교재가 정해집니다.</p>
+    </div>
+
+    <ol class="loop col">
+      <li>
+        <span class="ix">01</span>
+        <div>
+          <h3>자체 진단 테스트로 실력을 먼저 잽니다</h3>
+          <p>“어느 정도 하는 것 같다”가 아니라, 어느 단원을 몇 %까지 알고 있는지로 시작합니다.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">02</span>
+        <div>
+          <h3>결과에 맞춰 교재를 학생별로 지정합니다</h3>
+          <p>자체 관리 교재에서 그 아이에게 필요한 것을 고릅니다. 학년이 같아도 교재는 다를 수 있습니다.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">03</span>
+        <div>
+          <h3>개별 진도로 진행합니다</h3>
+          <p>비어 있는 단원은 채우고, 이미 아는 단원은 확인만 하고 넘어갑니다.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">04</span>
+        <div>
+          <h3>단원이 끝날 때마다 단원평가를 봅니다</h3>
+          <p>70~80점 이상, 통과해야 다음 단원으로 넘어갑니다. 통과하지 못하면 그 단원을 다시 합니다.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">05</span>
+        <div>
+          <h3>학기가 끝나면 기록으로 다음 교재를 다시 설계합니다</h3>
+          <p>한 학기 동안 쌓인 통과 기록과 오답 유형이 다음 학기 교재의 근거가 됩니다.</p>
+        </div>
+      </li>
+    </ol>
+
+    <p class="pull col">
+      진도는 달력이 넘기지 않습니다. 단원평가가 넘깁니다.
+      <span>날짜가 됐다고 다음 단원으로 밀지 않습니다.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ══════════ 04 5대 기둥 ══════════ -->
+<section class="sep" id="pillars">
+  <div class="wrap rv">
+    <p class="label">04 &nbsp;—&nbsp; 수업을 받치는 다섯</p>
+    <div class="col">
+      <h2>개별 진도가 굴러가게 하는<br><span class="thin">다섯 개의 기둥</span></h2>
+      <hr class="rule">
+    </div>
+    <ul class="pillars">
+      <li>
+        <span class="ix">01</span>
+        <h3>뼈대 학습법</h3>
+        <p>백지에 써보게 하고 → 목차로 구조를 맞추고 → 모개념으로 되짚습니다. 세 단계를 통과해야 “안다”고 봅니다. 문제를 맞혔다고 아는 것이 아닙니다.</p>
+      </li>
+      <li>
+        <span class="ix">02</span>
+        <h3>진도 계획표</h3>
+        <p>학생마다 자기 진도 계획표를 가집니다. 어디까지 왔고 다음이 무엇인지 학생도 학부모님도 볼 수 있습니다.</p>
+      </li>
+      <li>
+        <span class="ix">03</span>
+        <h3>주말 누적 테스트</h3>
+        <p>이번 주 것만 보지 않습니다. 지나온 단원을 누적해서 다시 확인합니다. 잊어버린 자리를 찾아냅니다.</p>
+      </li>
+      <li>
+        <span class="ix">04</span>
+        <h3>지역 학교 내신 대비</h3>
+        <p>아이가 다니는 그 학교의 기출을 3~5개년 분석해 예상문제를 만듭니다.</p>
+      </li>
+      <li>
+        <span class="ix">05</span>
+        <h3>동기부여 — 장학금 · 상점</h3>
+        <p>단원평가 통과와 누적 테스트 결과를 상점으로 쌓고 장학금으로 연결합니다. 수학이 오래 걸리는 과목이라 계속 다닐 이유가 필요합니다.</p>
+      </li>
+    </ul>
+
+    <!-- 뼈대 학습법의 증거 — 말로 설명하지 않고 판서를 그대로 보여준다 -->
+    <figure class="board">
+      <div class="board__pair">
+        <div class="board__one">
+          <a class="board__link" href="photos/det/f3-board-a.jpg" target="_blank" rel="noopener">
+            <img src="photos/det/f3-board-a.jpg" width="1600" height="738" alt="미적분2 그래프 그리기 판서" loading="lazy" decoding="async">
+            <span class="bc">미적분2 · 그래프 그리기 <em>크게 보기</em></span>
+          </a>
+        </div>
+        <div class="board__one">
+          <a class="board__link" href="photos/det/f4-board-b.jpg" target="_blank" rel="noopener">
+            <img src="photos/det/f4-board-b.jpg" width="1600" height="740" alt="다항함수 미분법 최대·최소 판서" loading="lazy" decoding="async">
+            <span class="bc">다항함수 미분법 · 최대와 최소 <em>크게 보기</em></span>
+          </a>
+        </div>
+      </div>
+      <figcaption>
+        <span class="bt">고2 미적분 · 두 과목에서 한 문제씩</span>
+        <span class="bd">답만 남기지 않습니다. 도함수를 구해 인수분해하고, 부호가 바뀌는 지점을 찾고, 그 지점의 값을 계산해 그래프로 잇거나 최대·최소를 정합니다. 판서에 이 순서가 통째로 남아 있는 이유는, 다음 문제를 아이가 혼자 이 순서로 밟아야 하기 때문입니다.</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ══════════ 05 엄궁캠퍼스 ══════════ -->
+<section class="campus" id="campus">
+  <div class="wrap rv">
+    <p class="label">05 &nbsp;—&nbsp; 엄궁캠퍼스</p>
+    <div class="col">
+      <h2>건물 2층 전체가<br><span class="thin">학원입니다</span></h2>
+      <hr class="rule">
+      <p class="lead">강의실과 자습실이 한 층에 이어져 있습니다.</p>
+    </div>
+    <!-- 강의실 컷은 원장 얼굴이 나와 제외(대표 지시). 파일은 원본 폴더에 남지만 배포되지 않는다. -->
+    <div class="shots">
+      <figure><img src="photos/det/f1-hall.jpg" width="1400" height="1400" alt="강의실 복도" loading="lazy" decoding="async"><figcaption>강 의 실 &nbsp;복 도</figcaption></figure>
+    </div>
+    <p class="cnote">부산 사상구 엄궁로 186, 2층.</p>
+  </div>
+</section>
+
+<!-- ══════════ 06 원장 ══════════ -->
+<section class="director" id="director">
+  <div class="wrap rv">
+    <p class="label">06 &nbsp;—&nbsp; 원장</p>
+    <div class="col">
+      <h2>21년 동안<br><span class="thin">같은 과목만 봐 왔습니다</span></h2>
+      <hr class="rule">
+    </div>
+    <div class="who">
+      <span class="yr">수학 지도 경력 21년</span>
+    </div>
+    <ul class="cv">
+      <li>
+        <b>초 · 중 · 고 전 과정 직접 설계 및 지도</b>
+        <span>초등 연산부터 고등 미적분까지, 학년이 바뀌어도 같은 사람이 봅니다. 그래서 앞 학년에서 무엇이 비었는지 압니다.</span>
+      </li>
+      <li>
+        <b>지역 학교 기출 분석 전문</b>
+        <span>엄궁중 · 학장중 · 주례여고 · 구덕고 · 서여고의 기출을 3~5개년 모아 학교별로 정리합니다.</span>
+      </li>
+      <li>
+        <b>자체 진단 · 자체 교재 · 자체 기록 시스템 설계</b>
+        <span>진단 테스트, 학생별 교재 지정 기준, 「차수학 성장기록」을 직접 만들고 운영합니다.</span>
+      </li>
+      <li>
+        <b>MAAT 수학경시대회 시행 학원</b>
+        <span>엄궁차수학학원에서 시행합니다.</span>
+      </li>
+    </ul>
+    <p class="small col" style="margin-top:44px">인사말 대신 이력을 적었습니다. 학원을 고르실 때 실제로 확인하시는 것이 그쪽이라고 생각합니다.</p>
+  </div>
+</section>
+
+<!-- ══════════ 07 학년별 ══════════ -->
+<section id="grades">
+  <div class="wrap rv">
+    <p class="label">07 &nbsp;—&nbsp; 학년별 안내</p>
+    <div class="col">
+      <h2>수업 시작 시간과<br><span class="thin">수강료입니다</span></h2>
+      <hr class="rule">
+    </div>
+
+    <div class="grades">
+      <div class="grade">
+        <span class="gt">초등부</span>
+        <h3>연산과 개념의 뼈대를 세우는 시기</h3>
+        <dl>
+          <dt>수업 시작</dt><dd class="v">오후 2:30</dd>
+          <dt>수강료</dt><dd class="v">월 17만원</dd>
+        </dl>
+      </div>
+
+      <div class="grade">
+        <span class="gt">중등부</span>
+        <h3>학교별 내신이 갈리기 시작하는 시기</h3>
+        <dl>
+          <dt>수업 시작</dt><dd class="v">오후 5:00</dd>
+          <dt>수강료</dt><dd class="v">월 25만원</dd>
+        </dl>
+      </div>
+
+      <div class="grade">
+        <span class="gt">고등부</span>
+        <h3>내신과 수능을 같이 끌고 가는 시기</h3>
+        <dl>
+          <dt>수업 시작</dt><dd class="v">오후 7:30</dd>
+          <dt>수강료</dt><dd class="v">고1 월 35만원<span class="memo">고2 과목별 월 20만원 · 고3 별도 문의</span></dd>
+        </dl>
+      </div>
+    </div>
+
+    <p class="note col">수업 시작 시간은 학년별로 정해져 있습니다. 정해진 시간에 시작해 정해진 시간에 끝냅니다. 자세한 요일 편성은 상담 때 안내드립니다.</p>
+  </div>
+</section>
+
+<!-- ══════════ 08 지역 내신 ══════════ -->
+<section class="sep" id="local">
+  <div class="wrap rv">
+    <p class="label">08 &nbsp;—&nbsp; 지역 내신</p>
+    <div class="col">
+      <h2>학교마다<br><span class="thin">시험이 다릅니다</span></h2>
+      <hr class="rule">
+      <p class="lead">전국 공통 문제집만 풀어서는 그 학교 시험지에 대응이 안 됩니다. 아이가 다니는 학교의 기출을 3~5개년 모아 분석하고, 그 학교 형태에 맞춘 예상문제로 대비합니다.</p>
+    </div>
+
+    <ul class="schools">
+      <li>엄궁중</li>
+      <li>학장중</li>
+      <li>주례여고</li>
+      <li>구덕고</li>
+      <li>서여고</li>
+    </ul>
+    <p class="small col" style="margin-top:26px">시험 범위 · 출제 경향 · 서술형 비중은 학교마다 다릅니다. 위 학교는 학교별 분석 자료를 따로 보유하고 있습니다.</p>
+
+    <div class="maat col">
+      <h3>MAAT 수학경시대회 시행 학원</h3>
+      <p>엄궁차수학학원에서 MAAT 수학경시대회를 시행합니다. 학원 안에서만 도는 시험이 아니라, 밖에서 재보는 기회를 함께 만듭니다.</p>
+    </div>
+
+    <div class="col" style="margin-top:56px">
+      <h3>학교별 분석은 블로그에 기록으로 쌓고 있습니다</h3>
+      <p>기출 분석과 시험 대비 내용을 학원 블로그에 계속 올리고 있습니다. 어떤 식으로 준비하는 곳인지, 상담 전에 직접 확인해보셔도 됩니다.</p>
+      <a class="quiet" href="https://blog.naver.com/maxmath33" target="_blank" rel="noopener">네이버 블로그에서 확인하기</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 09 「차수학 성장기록」 ══════════ -->
+<section class="record" id="record">
+  <div class="wrap rv">
+    <p class="label">09 &nbsp;—&nbsp; 자체 기록 시스템</p>
+    <div class="col">
+      <h2>「차수학 성장기록」</h2>
+      <hr class="rule rule--w">
+      <p class="lead">학기가 끝나도 기록이 남고, 그 기록이 다음 교재를 정합니다.</p>
+      <p>대부분의 학원에서 한 학기가 끝나면 그 학기가 사라집니다. 무엇을 통과했고 무엇에서 계속 걸렸는지가 남지 않으니, 다음 학기는 다시 감으로 시작합니다. 성장기록은 그 자리를 메우려고 만든 저희 자체 시스템입니다.</p>
+    </div>
+
+    <ul class="rec col">
+      <li>단원별 단원평가 통과 여부와 회차</li>
+      <li>반복해서 틀리는 유형</li>
+      <li>학기별로 어떤 교재를 어디까지 했는지</li>
+      <li>주말 누적 테스트 결과의 변화</li>
+    </ul>
+
+    <div class="sample">
+      <span class="st">기록 예시 · 익명 처리</span>
+      <table>
+        <tr><th>학생</th><td>중2 A군 · ○○중</td></tr>
+        <tr><th>단원평가</th><td>이차방정식 — 2회차 통과</td></tr>
+        <tr><th>반복 오답</th><td>근의 공식 활용 문제</td></tr>
+        <tr><th>다음 조치</th><td>다음 교재에 해당 유형 보강분 추가 지정</td></tr>
+      </table>
+    </div>
+    <p class="small col" style="margin-top:26px">실제 기록은 학생 정보를 익명 처리해 상담 때 보여드립니다.</p>
+  </div>
+</section>
+
+<!-- ══════════ 10 상담 ══════════ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <p class="label">10 &nbsp;—&nbsp; 상담</p>
+    <div class="col">
+      <h2>편하신 방법으로<br><span class="thin">연락 주세요</span></h2>
+      <hr class="rule">
+      <p class="lead">아이 학년과 지금 상황만 알려주시면 됩니다. 진단 테스트와 상담 일정은 통화 중에 잡아드립니다.</p>
+    </div>
+
+    <div class="ch">
+      <a class="btn btn--primary" href="tel:051-311-0312">전화 상담 <span class="btn__num">051-311-0312</span></a>
+      <a class="btn btn--onLight" href="https://pf.kakao.com/_YLxhxaG" target="_blank" rel="noopener">카카오톡 채널</a>
+    </div>
+
+    <ul class="links">
+      <li><a href="https://talk.naver.com/WC4ZGI" target="_blank" rel="noopener">네이버 톡톡 <span>메시지 상담</span></a></li>
+      <li><a href="https://naver.me/FjCLS5He" target="_blank" rel="noopener">네이버 지도 <span>길찾기</span></a></li>
+      <li><a href="https://blog.naver.com/maxmath33" target="_blank" rel="noopener">네이버 블로그 <span>기출 분석 기록</span></a></li>
+      <li><a href="https://www.instagram.com/ug.chamath/" target="_blank" rel="noopener">인스타그램 <span>@ug.chamath</span></a></li>
+    </ul>
+
+    <dl class="info">
+      <div>
+        <dt>상담시간</dt>
+        <dd>평일 14:30 – 22:00<br>주말 15:00 – 20:00</dd>
+      </div>
+      <div>
+        <dt>전화</dt>
+        <dd><a href="tel:051-311-0312" style="text-decoration:none">051-311-0312</a></dd>
+      </div>
+      <div>
+        <dt>주소</dt>
+        <dd>부산 사상구 엄궁로 186, 2층<span class="small">건물 2층 전체를 사용합니다.</span></dd>
+      </div>
+      <div>
+        <dt>대상</dt>
+        <dd>초 · 중 · 고 수학<span class="small">차수학 엄궁캠퍼스</span></dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="fn">엄궁차수학학원 · 차수학 엄궁캠퍼스</p>
+    <p>
+      부산 사상구 엄궁로 186, 2층<br>
+      전화 <a href="tel:051-311-0312">051-311-0312</a><br>
+      상담시간 평일 14:30–22:00 / 주말 15:00–20:00
+    </p>
+    <p class="fl">
+      <a href="https://pf.kakao.com/_YLxhxaG" target="_blank" rel="noopener">카카오톡 채널</a>
+      <a href="https://talk.naver.com/WC4ZGI" target="_blank" rel="noopener">네이버 톡톡</a>
+      <a href="https://naver.me/FjCLS5He" target="_blank" rel="noopener">네이버 지도</a>
+      <a href="https://blog.naver.com/maxmath33" target="_blank" rel="noopener">블로그</a>
+      <a href="https://www.instagram.com/ug.chamath/" target="_blank" rel="noopener">인스타그램</a>
+    </p>
+    <p class="fnote">© 엄궁차수학학원 · 초 · 중 · 고 수학</p>
+  </div>
+</footer>
+
+<!-- ══════════ 세로 상담 레일 (데스크톱) ══════════ -->
+<nav class="rail" aria-label="상담 바로가기">
+  <div class="rail__in">
+    <a class="tel" href="tel:051-311-0312">전화 상담<span class="n">051-311-0312</span></a>
+    <a href="https://pf.kakao.com/_YLxhxaG" target="_blank" rel="noopener">카카오톡</a>
+  </div>
+</nav>
+
+<!-- ══════════ 스티키 바 (맨 아래) ══════════ -->
+<nav class="sticky" aria-label="상담 바로가기">
+  <div class="in">
+    <a class="btn btn--primary" href="tel:051-311-0312">전화 상담</a>
+    <a class="btn btn--onDark" href="https://pf.kakao.com/_YLxhxaG" target="_blank" rel="noopener">카카오톡</a>
+  </div>
+</nav>
+
+<script>
+/* 세로 레일이 어두운 섹션 위를 지날 때만 색을 뒤집는다.
+   레일은 top:50% 에 서므로 "화면 세로 중앙점이 어느 섹션 안에 있는가"만 보면 된다.
+   IntersectionObserver를 쓰지 않는 이유: 백그라운드 탭에서 콜백이 멈춰
+   첫 화면 색이 틀어진 채 굳는다(실측 확인). 아래는 로드 시 동기 실행된다. */
+(function () {
+  var rail    = document.querySelector('.rail');
+  var darks   = [].slice.call(document.querySelectorAll('.hero, .campus, .record, footer'));
+  var bar     = document.querySelector('.sticky');
+  var heroCta = document.querySelector('.hero .btns');
+
+  var queued = false;
+  function apply() {
+    queued = false;
+    var vh = window.innerHeight;
+
+    /* 레일: 화면 세로 중앙점이 어두운 섹션 안에 있는가 */
+    if (rail && darks.length) {
+      var mid = vh / 2;
+      rail.classList.toggle('rail--dark', darks.some(function (el) {
+        var r = el.getBoundingClientRect();
+        return r.top <= mid && r.bottom >= mid;
+      }));
+    }
+
+    /* 하단 고정바: 히어로 CTA가 화면에 보이는 동안은 내려둔다.
+       안 그러면 첫 화면에 같은 카톡 버튼이 두 번 나오고, 세로가 짧은 기기에서는
+       고정바가 히어로 버튼 위를 덮는다. 히어로를 지나가면 다시 올라온다. */
+    if (bar && heroCta) {
+      var c = heroCta.getBoundingClientRect();
+      bar.classList.toggle('sticky--off', c.bottom > 0 && c.top < vh);
+    }
+  }
+  function queue() {
+    if (queued) return;
+    queued = true;
+    (window.requestAnimationFrame || setTimeout)(apply, 0);
+  }
+
+  apply();
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+})();
+</script>
+
+</body>
+</html>

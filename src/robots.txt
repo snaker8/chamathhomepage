@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# 네이버 · 다음 크롤러 (지역 학원은 네이버 유입이 절대적이라 명시해 둔다)
+User-agent: Yeti
+Allow: /
+
+User-agent: Daumoa
+Allow: /
+
+Sitemap: https://chamath-site.vercel.app/sitemap.xml
