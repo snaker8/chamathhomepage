@@ -8,13 +8,35 @@
  *
  * 사용:
  *   node scripts/seo-check.mjs            # 사람이 읽는 출력
- *   node scripts/seo-check.mjs --quiet    # 문제 있을 때만 출력 (스케줄러용)
+ *   node scripts/seo-check.mjs --quiet    # 문제 있을 때만 출력
+ *   node scripts/seo-check.mjs --log      # 결과를 scripts/seo-check.log 에 누적 (스케줄러용)
  *
  * 종료코드: 0 = 이상 없음, 1 = 문제 발견 (스케줄러가 이걸로 판단한다)
+ *
+ * 로그를 Node 가 직접 쓴다. .cmd 배치를 거치면 경로의 한글이 깨진다
+ * (cmd.exe 는 UTF-8 배치파일을 못 읽는다 — 결과코드 9009 로 조용히 실패했다).
  */
+
+import { appendFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
 
 const SITE = process.env.SEO_CHECK_SITE ?? 'https://chamath-site.vercel.app'
 const QUIET = process.argv.includes('--quiet')
+const TO_LOG = process.argv.includes('--log')
+const LOG_PATH = join(dirname(fileURLToPath(import.meta.url)), 'seo-check.log')
+
+/** 스케줄러로 돌 때는 화면 대신 로그 파일에 남긴다. */
+function report(lines, isFailure) {
+  const text = lines.join('\n')
+  if (TO_LOG) {
+    // 이상 없는 날까지 전부 쌓으면 로그를 아무도 안 읽는다. 문제일 때만 남긴다.
+    if (isFailure) appendFileSync(LOG_PATH, text + '\n\n', 'utf8')
+    return
+  }
+  const out = isFailure ? console.error : console.log
+  out(text)
+}
 
 /** 살아 있어야 하는 공개 페이지. 하나라도 404 면 사이트가 깨진 것이다. */
 const PUBLIC_PAGES = [
@@ -135,23 +157,33 @@ async function main() {
   const stamp = new Date().toLocaleString('ko-KR')
 
   if (problems.length > 0) {
-    console.error(`[${stamp}] 엄궁차수학 홈페이지 점검 — 문제 ${problems.length}건`)
-    console.error(`대상: ${SITE}`)
-    for (const p of problems) console.error(`  ✗ ${p}`)
+    report(
+      [
+        `[${stamp}] 엄궁차수학 홈페이지 점검 — 문제 ${problems.length}건`,
+        `대상: ${SITE}`,
+        ...problems.map((p) => `  ✗ ${p}`),
+      ],
+      true
+    )
     process.exit(1)
   }
 
   if (!QUIET) {
-    console.log(`[${stamp}] 엄궁차수학 홈페이지 점검 — 이상 없음`)
-    console.log(`대상: ${SITE}`)
-    console.log(`  ✓ 공개 페이지 ${PUBLIC_PAGES.length}개 정상`)
-    console.log(`  ✓ 검색엔진 파일 ${SEO_ASSETS.length}개 정상`)
-    console.log(`  ✓ 제목·설명·구조화 데이터·파비콘 확인`)
-    for (const n of notes) console.log(`  · ${n}`)
+    report(
+      [
+        `[${stamp}] 엄궁차수학 홈페이지 점검 — 이상 없음`,
+        `대상: ${SITE}`,
+        `  ✓ 공개 페이지 ${PUBLIC_PAGES.length}개 정상`,
+        `  ✓ 검색엔진 파일 ${SEO_ASSETS.length}개 정상`,
+        `  ✓ 제목·설명·구조화 데이터·파비콘 확인`,
+        ...notes.map((n) => `  · ${n}`),
+      ],
+      false
+    )
   }
 }
 
 main().catch((err) => {
-  console.error(`점검 스크립트 자체가 실패했다: ${err.stack ?? err.message}`)
+  report([`점검 스크립트 자체가 실패했다: ${err.stack ?? err.message}`], true)
   process.exit(1)
 })
