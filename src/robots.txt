@@ -1,6 +1,10 @@
 User-agent: *
 Allow: /
 
+# 구글 이미지 크롤러. 막혀 있으면 검색결과에 썸네일이 안 뜬다.
+User-agent: Googlebot-Image
+Allow: /
+
 # 네이버 · 다음 크롤러 (지역 학원은 네이버 유입이 절대적이라 명시해 둔다)
 User-agent: Yeti
 Allow: /
