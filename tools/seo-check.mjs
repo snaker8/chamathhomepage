@@ -79,6 +79,7 @@ if (home) {
     [/href="\/favicon\.ico"/, '파비콘 링크가 없다 — 검색결과에 기본 지구본이 뜬다'],
     [/max-image-preview:large/, 'robots 메타가 빠졌다 — 구글이 썸네일을 작게 쓴다'],
     [/naver-site-verification/, '네이버 소유확인 태그가 사라졌다 — 지우면 소유확인이 풀린다'],
+    [/google-site-verification/, '구글 소유확인 태그가 사라졌다 — 지우면 서치콘솔 연결이 풀린다'],
   ]
   for (const [re, msg] of must) if (!re.test(home)) problems.push(msg)
 
