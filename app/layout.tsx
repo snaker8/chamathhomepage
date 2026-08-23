@@ -7,16 +7,24 @@ const siteUrl = 'https://chamath-site.vercel.app'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: '차수학 | 초·중·고 수학 전문 학원',
-  description: '초중고 수학전문학원. 데이터 기반 개별 관리와 원장 직접 클리닉으로 학생의 수학 실력을 책임집니다. 부산 사상구 엄궁 차수학.',
-  keywords: ['차수학', '엄궁차수학', '엄궁수학', '엄궁수학학원', '수학학원', '부산수학', '내신대비', '수능수학', '개별관리', '사상구', '엄궁'],
-  authors: [{ name: '차수학' }],
+  title: {
+    default: '엄궁차수학 | 부산 사상구 엄궁동 초·중·고 수학전문학원',
+    template: '%s | 엄궁차수학',
+  },
+  description: '부산 사상구 엄궁동 초·중·고 수학전문학원. 데이터 기반 개별 관리와 원장 직접 클리닉으로 학생의 수학 실력을 책임집니다. 상담 051-311-0312.',
+  keywords: ['차수학', '엄궁차수학', '엄궁수학', '엄궁수학학원', '엄궁동수학학원', '사상구수학학원', '수학학원', '부산수학', '내신대비', '수능수학', '개별관리', '사상구', '엄궁'],
+  authors: [{ name: '엄궁차수학' }],
   alternates: {
-    canonical: siteUrl,
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
   openGraph: {
-    title: '차수학 | 초·중·고 수학전문학원',
-    description: '초중고 수학전문학원. 데이터 기반 개별 관리와 원장 직접 클리닉. 부산 엄궁 차수학.',
+    siteName: '엄궁차수학',
+    title: '엄궁차수학 | 부산 사상구 엄궁동 초·중·고 수학전문학원',
+    description: '부산 사상구 엄궁동 초·중·고 수학전문학원. 데이터 기반 개별 관리와 원장 직접 클리닉.',
     type: 'website',
     locale: 'ko_KR',
     url: siteUrl,

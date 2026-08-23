@@ -39,7 +39,9 @@ export default function NoticeBoard() {
                         <span className="w-1 h-8 bg-accent-600 mr-4 rounded-full" />
                         공지사항
                     </h2>
-                    <Link href="/news" className="flex items-center text-void-400 hover:text-accent-600 transition-all group/link text-xs font-semibold tracking-widest uppercase">
+                    {/* /news 페이지는 존재한 적이 없다 — 홈에서 404 로 나가고 있었다.
+                        실제로 있는 게시판인 /info-board 로 돌린다. */}
+                    <Link href="/info-board" className="flex items-center text-void-400 hover:text-accent-600 transition-all group/link text-xs font-semibold tracking-widest uppercase">
                         <span className="mr-2">전체보기</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform" />
                     </Link>
